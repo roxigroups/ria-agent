@@ -26,3 +26,11 @@ yarn-error.log*
 # duplicate media in root (properly stored under public/)
 /*.mp4
 /*.jpg
+
+# OpenNext
+.open-next
+
+# wrangler files
+.wrangler
+.dev.vars*
+!.dev.vars.example
