@@ -3,6 +3,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Send, CheckCircle, Phone, Mail, Building, User, MessageSquare } from 'lucide-react';
 import TiltCard from '../TiltCard';
+import Footer from '../Footer';
 
 interface DeploymentSectionProps {
   isMuted: boolean;
@@ -70,7 +71,7 @@ export default function DeploymentSection({ isMuted, isActive = false }: Deploym
   };
 
   return (
-    <section id="section-3" className="page-section">
+    <section id="section-3" className="page-section section-scrollable">
       {/* 4th Video Background */}
       <div className="video-bg-layer">
         <video
@@ -98,7 +99,7 @@ export default function DeploymentSection({ isMuted, isActive = false }: Deploym
       <div className="section-content">
         <div
           style={{
-            maxWidth: '840px',
+            maxWidth: '1100px',
             margin: '0 auto',
             width: '100%',
             display: 'flex',
@@ -379,17 +380,10 @@ export default function DeploymentSection({ isMuted, isActive = false }: Deploym
             </div>
           </TiltCard>
 
-          {/* Footer Info */}
-          <footer
-            style={{
-              textAlign: 'center',
-              color: 'var(--white-subtle)',
-              fontSize: '0.82rem',
-              fontFamily: 'var(--font-mono)',
-            }}
-          >
-            © {new Date().getFullYear()} RIA INTELLIGENCE INC. ALL RIGHTS RESERVED.
-          </footer>
+          {/* Comprehensive 3-Space Footer */}
+          <div style={{ width: '100%', maxWidth: '1100px' }}>
+            <Footer />
+          </div>
         </div>
       </div>
     </section>

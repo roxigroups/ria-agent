@@ -5,6 +5,7 @@ import { MessageSquare, Phone, Mail, Building, User, CheckCircle, ArrowRight } f
 import HeaderNav from '@/components/HeaderNav';
 import ParticleCanvas from '@/components/ParticleCanvas';
 import TiltCard from '@/components/TiltCard';
+import Footer from '@/components/Footer';
 
 export default function ContactPage() {
   const [formData, setFormData] = useState({
@@ -449,17 +450,7 @@ export default function ContactPage() {
         </div>
 
         {/* Footer */}
-        <footer
-          style={{
-            textAlign: 'center',
-            color: 'var(--white-subtle)',
-            fontSize: '0.82rem',
-            fontFamily: 'var(--font-mono)',
-            paddingTop: '1rem',
-          }}
-        >
-          © {new Date().getFullYear()} RIA INTELLIGENCE INC. ALL RIGHTS RESERVED.
-        </footer>
+        <Footer />
       </div>
     </main>
   );

@@ -82,6 +82,15 @@ body {
   transform-style: preserve-3d;
 }
 
+.page-section.section-scrollable {
+  height: auto;
+  min-height: 100vh;
+  min-height: 100dvh;
+  overflow-y: visible;
+  padding-top: 4rem;
+  padding-bottom: 4rem;
+}
+
 /* Natural Video Background Layer (Zero Color Shift) */
 .video-bg-layer {
   position: absolute;

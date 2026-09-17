@@ -23,6 +23,7 @@ import {
 import HeaderNav from '@/components/HeaderNav';
 import ParticleCanvas from '@/components/ParticleCanvas';
 import TiltCard from '@/components/TiltCard';
+import Footer from '@/components/Footer';
 
 export default function ServicesPage() {
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);
@@ -483,6 +484,9 @@ export default function ServicesPage() {
             ))}
           </div>
         </div>
+
+        {/* Global Footer */}
+        <Footer />
       </div>
 
       {/* Interactive Lightbox Modal for High-Resolution Dashboard Inspection */}

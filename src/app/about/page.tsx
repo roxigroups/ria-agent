@@ -7,6 +7,7 @@ import { Headphones, Activity, Zap, ArrowRight, CheckCircle2, Building2, Timer, 
 import HeaderNav from '@/components/HeaderNav';
 import ParticleCanvas from '@/components/ParticleCanvas';
 import TiltCard from '@/components/TiltCard';
+import Footer from '@/components/Footer';
 
 export default function AboutPage() {
   return (
@@ -282,6 +283,9 @@ export default function AboutPage() {
             </TiltCard>
           </div>
         </div>
+
+        {/* Global Footer */}
+        <Footer />
       </div>
     </main>
   );
