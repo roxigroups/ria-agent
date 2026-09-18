@@ -24,6 +24,11 @@ async def get_rooms():
     await api.aclose()
     return [room.name for room in rooms.rooms]
 
+@app.route("/")
+@app.route("/health")
+def health_check():
+    return {"status": "ok", "service": "RIA Voice Agent Backend"}, 200
+
 @app.route("/getToken")
 async def get_token():
     name = request.args.get("name", "my name")
@@ -43,4 +48,5 @@ async def get_token():
     return token.to_jwt()
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5001, debug=True)
+    port = int(os.environ.get("PORT", 5001))
+    app.run(host="0.0.0.0", port=port)
