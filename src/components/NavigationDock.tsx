@@ -16,6 +16,7 @@ import {
   Info, 
   Wrench, 
   MessageSquare,
+  PhoneCall,
   ArrowUpRight 
 } from 'lucide-react';
 
@@ -47,6 +48,7 @@ export default function NavigationDock({
     { label: 'About', href: '/about', icon: Info, subtitle: 'Latency & Architecture', isSection: false },
     { label: 'Services', href: '/services', icon: Wrench, subtitle: 'Enterprise Editions & Telemetry', isSection: false },
     { label: 'Contact', href: '/contact', icon: MessageSquare, subtitle: 'Direct Desk +91 8106668552', isSection: false },
+    { label: 'Live Demo', href: '/demo', icon: PhoneCall, subtitle: 'Live Voice Agent Calling', isSection: false },
   ];
 
   const toggleFullscreen = () => {
@@ -117,7 +119,7 @@ export default function NavigationDock({
             }}
           >
             <Image
-              src="/images/ria-logo.svg"
+              src="/images/ria-logo.jpg"
               alt="RIA ai Agent Logo"
               fill
               style={{ objectFit: 'contain' }}
@@ -262,6 +264,29 @@ export default function NavigationDock({
           >
             Contact
           </Link>
+
+          {/* Live Demo (Voice Calling Project) */}
+          <Link
+            href="/demo"
+            style={{
+              padding: '0.45rem 1.1rem',
+              borderRadius: '9999px',
+              background: 'transparent',
+              color: 'var(--white-muted)',
+              fontWeight: 600,
+              fontSize: '0.82rem',
+              fontFamily: 'var(--font-mono)',
+              letterSpacing: '0.05em',
+              textTransform: 'uppercase',
+              border: '1px solid transparent',
+              textDecoration: 'none',
+              cursor: 'pointer',
+              transition: 'all 0.2s cubic-bezier(0.16, 1, 0.3, 1)',
+              display: 'inline-block',
+            }}
+          >
+            Live Demo
+          </Link>
         </nav>
 
         {/* Right Header Status & Controls */}
@@ -376,7 +401,7 @@ export default function NavigationDock({
                 }}
               >
                 <Image
-                  src="/images/ria-logo.svg"
+                  src="/images/ria-logo.jpg"
                   alt="RIA ai Agent Logo"
                   fill
                   style={{ objectFit: 'contain' }}

@@ -16,6 +16,7 @@ import {
   Info,
   Wrench,
   MessageSquare,
+  PhoneCall,
   ArrowUpRight
 } from 'lucide-react';
 
@@ -37,6 +38,7 @@ export default function HeaderNav({
     { label: 'About', href: '/about', icon: Info, subtitle: 'Latency & Architecture' },
     { label: 'Services', href: '/services', icon: Wrench, subtitle: 'Enterprise Editions & Telemetry' },
     { label: 'Contact', href: '/contact', icon: MessageSquare, subtitle: 'Direct Desk +91 8106668552' },
+    { label: 'Live Demo', href: '/demo', icon: PhoneCall, subtitle: 'Live Voice Agent Calling' },
   ];
 
   const toggleFullscreen = () => {
@@ -105,7 +107,7 @@ export default function HeaderNav({
             }}
           >
             <Image
-              src="/images/ria-logo.svg"
+              src="/images/ria-logo.jpg"
               alt="RIA ai Agent Logo"
               fill
               style={{ objectFit: 'contain' }}
@@ -306,7 +308,7 @@ export default function HeaderNav({
                 }}
               >
                 <Image
-                  src="/images/ria-logo.svg"
+                  src="/images/ria-logo.jpg"
                   alt="RIA ai Agent Logo"
                   fill
                   style={{ objectFit: 'contain' }}

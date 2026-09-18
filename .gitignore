@@ -34,3 +34,13 @@ yarn-error.log*
 .wrangler
 .dev.vars*
 !.dev.vars.example
+
+# Python virtual environment & backend env
+.env
+.env*.local
+backend/.env
+backend/.venv/
+.venv/
+__pycache__/
+*.pyc
+

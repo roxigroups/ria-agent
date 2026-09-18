@@ -7,9 +7,9 @@ export const metadata: Metadata = {
   keywords: ['RIA ai Agent', 'AI collection agent', 'autonomous voice agent', 'multimodal AI', 'call center AI', 'RIA Intelligence'],
   authors: [{ name: 'RIA ai Agent' }],
   icons: {
-    icon: '/images/ria-logo.svg',
-    shortcut: '/images/ria-logo.svg',
-    apple: '/images/ria-logo.svg',
+    icon: '/images/ria-logo.jpg',
+    shortcut: '/images/ria-logo.jpg',
+    apple: '/images/ria-logo.jpg',
   },
 };
 
