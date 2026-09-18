@@ -7,9 +7,11 @@ from livekit.agents import (
     AgentSession,
     Agent,
     JobContext,
+    JobExecutorType,
     WorkerOptions,
     cli,
 )
+import math
 from livekit.plugins import openai
 from api import AssistantFnc
 from prompts import WELCOME_MESSAGE, INSTRUCTIONS
@@ -51,7 +53,9 @@ if __name__ == "__main__":
     cli.run_app(
         WorkerOptions(
             entrypoint_fnc=entrypoint,
-            num_idle_processes=1,
-            load_threshold=0.95,
+            job_executor_type=JobExecutorType.THREAD,
+            num_idle_processes=0,
+            load_threshold=math.inf,
+            load_fnc=lambda *args: 0.0,
         )
     )
