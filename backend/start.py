@@ -10,7 +10,7 @@ def run():
     print("🎙️ Launching LiveKit Agent worker (agent.py)...")
     agent_process = subprocess.Popen([sys.executable, "agent.py", "start"])
 
-    # 2. Start the Flask HTTP Health Check server
+    # 2. Start the Flask HTTP Health Check server on the assigned PORT
     print("🌐 Launching Health Check server (server.py)...")
     server_process = subprocess.Popen([sys.executable, "server.py"])
 
