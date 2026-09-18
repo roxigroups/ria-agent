@@ -171,7 +171,7 @@ const LiveKitModal = ({ setShowSupport }) => {
             <LiveKitErrorBoundary onReset={() => setIsSubmittingName(true)}>
               <LiveKitRoom
                 className="livekit-room-wrapper"
-                serverUrl={process.env.NEXT_PUBLIC_LIVEKIT_URL || process.env.VITE_LIVEKIT_URL || "wss://ria-agent-7ux7medh.livekit.cloud"}
+                serverUrl={process.env.NEXT_PUBLIC_LIVEKIT_URL || process.env.LIVEKIT_URL || process.env.VITE_LIVEKIT_URL || "wss://ria-agent-7ux7medh.livekit.cloud"}
                 token={token}
                 connect={true}
                 video={false}

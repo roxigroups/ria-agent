@@ -10,8 +10,8 @@ export async function GET(request: NextRequest) {
     room = 'room-' + Math.random().toString(36).substring(2, 10);
   }
 
-  const apiKey = process.env.LIVEKIT_API_KEY;
-  const apiSecret = process.env.LIVEKIT_API_SECRET;
+  const apiKey = process.env.LIVEKIT_API_KEY || process.env.NEXT_PUBLIC_LIVEKIT_API_KEY || process.env.LK_API_KEY || 'APIwy546qDvRF3K';
+  const apiSecret = process.env.LIVEKIT_API_SECRET || process.env.LK_API_SECRET || 'wLkLMhKo8WbMoeX5NiIHB5nkmNNQZPGk9Yclco78p0f';
 
   try {
     if (apiKey && apiSecret) {
