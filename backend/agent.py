@@ -48,4 +48,10 @@ async def entrypoint(ctx: JobContext):
     )
 
 if __name__ == "__main__":
-    cli.run_app(WorkerOptions(entrypoint_fnc=entrypoint))
+    cli.run_app(
+        WorkerOptions(
+            entrypoint_fnc=entrypoint,
+            num_idle_processes=1,
+            load_threshold=0.95,
+        )
+    )
