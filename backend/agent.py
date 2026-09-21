@@ -27,7 +27,7 @@ async def entrypoint(ctx: JobContext):
     session = AgentSession(
         llm=openai.realtime.RealtimeModel(
             model="gpt-realtime",
-            voice="shimmer",
+            voice="coral",
         )
     )
 
