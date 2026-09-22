@@ -52,13 +52,13 @@ async def entrypoint(ctx: JobContext):
         modalities=["text", "audio"],
         input_audio_transcription={
             "model": "whisper-1",
-            "prompt": "RIA AI voice assistant, Roxi, customer support, sales, booking, free trial, demo, pricing, Telugu, Hindi, English.",
+            "prompt": "RIA AI Voice Assistant. సంభాషణ తెలుగు మరియు ఇంగ్లీష్ (Telugu & English) లో ఉంటుంది. వంద మంది, కస్టమర్లు, బిజినెస్, sales, accounts, payment follow-ups, trial, demo, 100 minutes, Roxi.",
         },
         input_audio_noise_reduction="near_field",
         turn_detection=TurnDetection(
             type="server_vad",
-            # Voice activity sensitivity
-            threshold=0.5,
+            # Voice activity sensitivity (0.6 avoids phantom background triggers)
+            threshold=0.6,
             # Keep a small amount of audio before detected speech
             prefix_padding_ms=350,
             # How long the user must stop before RIA responds
