@@ -52,6 +52,7 @@ async def entrypoint(ctx: JobContext):
         modalities=["text", "audio"],
         input_audio_transcription={
             "model": "whisper-1",
+            "prompt": "RIA AI voice assistant, Roxi, customer support, sales, booking, free trial, demo, pricing, Telugu, Hindi, English.",
         },
         input_audio_noise_reduction="near_field",
         turn_detection=TurnDetection(
@@ -59,9 +60,9 @@ async def entrypoint(ctx: JobContext):
             # Voice activity sensitivity
             threshold=0.5,
             # Keep a small amount of audio before detected speech
-            prefix_padding_ms=300,
+            prefix_padding_ms=350,
             # How long the user must stop before RIA responds
-            silence_duration_ms=450,
+            silence_duration_ms=650,
             # Automatically create response after user finishes
             create_response=True,
             # Allow user to interrupt RIA
