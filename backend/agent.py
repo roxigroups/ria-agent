@@ -51,7 +51,7 @@ async def entrypoint(ctx: JobContext):
         ),
         modalities=["text", "audio"],
         input_audio_transcription={
-            "model": "gpt-4o-transcribe",
+            "model": "whisper-1",
         },
         input_audio_noise_reduction="near_field",
         turn_detection=TurnDetection(
