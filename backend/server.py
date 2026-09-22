@@ -1,52 +1,85 @@
 import os
-from livekit import api
-from flask import Flask, request
-from dotenv import load_dotenv
-from flask_cors import CORS
-from livekit.api import LiveKitAPI, ListRoomsRequest
 import uuid
+from dotenv import load_dotenv
+from flask import Flask, jsonify, request
+from flask_cors import CORS
+from livekit import api
 
 load_dotenv()
 
 app = Flask(__name__)
-CORS(app, resources={r"/*": {"origins": "*"}})
 
-async def generate_room_name():
-    name = "room-" + str(uuid.uuid4())[:8]
-    rooms = await get_rooms()
-    while name in rooms:
-        name = "room-" + str(uuid.uuid4())[:8]
-    return name
+frontend_origin = os.getenv("FRONTEND_ORIGIN", "*")
 
-async def get_rooms():
-    api = LiveKitAPI()
-    rooms = await api.room.list_rooms(ListRoomsRequest())
-    await api.aclose()
-    return [room.name for room in rooms.rooms]
+CORS(
+    app,
+    resources={
+        r"/*": {
+            "origins": frontend_origin,
+        }
+    },
+    methods=["GET", "OPTIONS"],
+)
+
+
+def create_room_name() -> str:
+    return f"ria-{uuid.uuid4().hex[:12]}"
+
+
+def create_token(identity: str, room: str) -> str:
+    api_key = os.getenv("LIVEKIT_API_KEY")
+    api_secret = os.getenv("LIVEKIT_API_SECRET")
+
+    if not api_key:
+        raise RuntimeError("LIVEKIT_API_KEY is missing")
+
+    if not api_secret:
+        raise RuntimeError("LIVEKIT_API_SECRET is missing")
+
+    token = (
+        api.AccessToken(api_key, api_secret)
+        .with_identity(identity)
+        .with_name(identity)
+        .with_grants(
+            api.VideoGrants(
+                room_join=True,
+                room=room,
+                can_publish=True,
+                can_subscribe=True,
+            )
+        )
+    )
+
+    return token.to_jwt()
+
 
 @app.route("/")
 @app.route("/health")
-def health_check():
-    return {"status": "ok", "service": "RIA Voice Agent Backend"}, 200
+def health():
+    return jsonify({"status": "ok", "service": "ria-token-server"}), 200
+
 
 @app.route("/getToken")
-async def get_token():
-    name = request.args.get("name", "my name")
-    room = request.args.get("room", None)
-    
-    if not room:
-        room = await generate_room_name()
-        
-    token = api.AccessToken(os.getenv("LIVEKIT_API_KEY"), os.getenv("LIVEKIT_API_SECRET")) \
-        .with_identity(name)\
-        .with_name(name)\
-        .with_grants(api.VideoGrants(
-            room_join=True,
-            room=room
-        ))
-    
-    return token.to_jwt()
+def get_token():
+    name = request.args.get("name", "").strip()
+    requested_room = request.args.get("room", "").strip()
+
+    if not name:
+        return jsonify({"error": "name is required"}), 400
+
+    if len(name) > 100:
+        return jsonify({"error": "name is too long"}), 400
+
+    room = requested_room if requested_room else create_room_name()
+
+    try:
+        token = create_token(identity=name, room=room)
+        return token, 200, {"Content-Type": "text/plain"}
+    except Exception as exc:
+        app.logger.exception("Token generation failed")
+        return jsonify({"error": str(exc)}), 500
+
 
 if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 10000))
-    app.run(host="0.0.0.0", port=port)
+    port = int(os.getenv("PORT", "5001"))
+    app.run(host="0.0.0.0", port=port, debug=False)

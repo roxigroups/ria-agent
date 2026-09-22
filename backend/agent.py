@@ -1,34 +1,76 @@
 from __future__ import annotations
-import os
-from dotenv import load_dotenv
 
-from livekit import agents
+import logging
+import os
+import math
+
+from dotenv import load_dotenv
+from openai.types.beta.realtime.session import TurnDetection
+
 from livekit.agents import (
-    AgentSession,
     Agent,
+    AgentSession,
     JobContext,
     JobExecutorType,
     WorkerOptions,
     cli,
 )
-import math
 from livekit.plugins import openai
+
 from api import AssistantFnc
-from prompts import WELCOME_MESSAGE, INSTRUCTIONS
+from prompts import INSTRUCTIONS, WELCOME_MESSAGE
 
 load_dotenv(override=True)
 
+logger = logging.getLogger("ria-agent")
+logger.setLevel(logging.INFO)
+
+
 async def entrypoint(ctx: JobContext):
+    logger.info("Connecting to room: %s", ctx.room.name)
+
     await ctx.connect()
-    await ctx.wait_for_participant()
+
+    participant = await ctx.wait_for_participant()
+
+    logger.info(
+        "Participant joined: %s",
+        participant.identity,
+    )
 
     assistant_fnc = AssistantFnc()
 
+    realtime_model = openai.realtime.RealtimeModel(
+        model=os.getenv(
+            "OPENAI_REALTIME_MODEL",
+            "gpt-realtime",
+        ),
+        voice=os.getenv(
+            "OPENAI_REALTIME_VOICE",
+            "coral",
+        ),
+        modalities=["text", "audio"],
+        input_audio_transcription={
+            "model": "gpt-4o-transcribe",
+        },
+        input_audio_noise_reduction="near_field",
+        turn_detection=TurnDetection(
+            type="server_vad",
+            # Voice activity sensitivity
+            threshold=0.5,
+            # Keep a small amount of audio before detected speech
+            prefix_padding_ms=300,
+            # How long the user must stop before RIA responds
+            silence_duration_ms=450,
+            # Automatically create response after user finishes
+            create_response=True,
+            # Allow user to interrupt RIA
+            interrupt_response=True,
+        ),
+    )
+
     session = AgentSession(
-        llm=openai.realtime.RealtimeModel(
-            model="gpt-realtime",
-            voice="coral",
-        )
+        llm=realtime_model,
     )
 
     agent = Agent(
@@ -45,9 +87,16 @@ async def entrypoint(ctx: JobContext):
         agent=agent,
     )
 
+    # Initial greeting
     await session.generate_reply(
         instructions=WELCOME_MESSAGE
     )
+
+    logger.info(
+        "RIA voice session started for %s",
+        participant.identity,
+    )
+
 
 if __name__ == "__main__":
     cli.run_app(
