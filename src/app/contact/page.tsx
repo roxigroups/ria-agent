@@ -35,7 +35,7 @@ export default function ContactPage() {
       `I would like to discuss deploying Autonomous AI Collection Agents.`;
 
     const encodedMessage = encodeURIComponent(message);
-    const whatsappUrl = `https://api.whatsapp.com/send?phone=918106668552&text=${encodedMessage}`;
+    const whatsappUrl = `https://api.whatsapp.com/send?phone=917248199999&text=${encodedMessage}`;
 
     // Open WhatsApp directly to +918106668552
     setTimeout(() => {
@@ -98,7 +98,7 @@ export default function ContactPage() {
             }}
           >
             Fill out your details below. Your information will route directly to our fleet operations desk at{' '}
-            <strong style={{ color: '#FFFFFF' }}>+91 8106668552</strong> via WhatsApp.
+            <strong style={{ color: '#FFFFFF' }}>+91 7248199999</strong> via WhatsApp.
           </p>
         </div>
 
