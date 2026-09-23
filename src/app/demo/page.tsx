@@ -7,7 +7,6 @@ import HeaderNav from '@/components/HeaderNav';
 import ParticleCanvas from '@/components/ParticleCanvas';
 import TiltCard from '@/components/TiltCard';
 import Footer from '@/components/Footer';
-import DemoFaqSection from '@/components/demo/DemoFaqSection';
 import '@/components/calling/calling.css';
 import {
   PhoneCall,
@@ -26,8 +25,6 @@ import {
   Sliders,
   Cpu,
   HelpCircle,
-  ChevronDown,
-  BookOpen,
 } from 'lucide-react';
 
 // Dynamically import LiveKitModal with SSR disabled for client-side WebRTC compatibility
@@ -37,7 +34,6 @@ const LiveKitModal = dynamic(() => import('@/components/calling/LiveKitModal'), 
 
 export default function DemoPage() {
   const [showSupport, setShowSupport] = useState(false);
-  const [showFaqs, setShowFaqs] = useState(false);
 
   const handleSupportClick = () => {
     setShowSupport(true);
@@ -153,44 +149,29 @@ export default function DemoPage() {
                 <span>Talk to RIA (Start Live Call)</span>
               </button>
 
-              <button
-                onClick={() => {
-                  const nextState = !showFaqs;
-                  setShowFaqs(nextState);
-                  if (nextState) {
-                    setTimeout(() => {
-                      document.getElementById('demo-faq-section')?.scrollIntoView({ behavior: 'smooth' });
-                    }, 120);
-                  }
-                }}
+              <Link
+                href="/qa"
                 className="btn-skeuo-secondary"
-                id="toggle-demo-faqs-btn"
+                id="link-demo-faqs-btn"
                 style={{
                   padding: '1.15rem 2.2rem',
                   fontSize: '1.02rem',
                   display: 'inline-flex',
                   alignItems: 'center',
                   gap: '0.75rem',
-                  background: showFaqs ? 'rgba(255, 255, 255, 0.16)' : 'rgba(255, 255, 255, 0.06)',
-                  border: showFaqs ? '1px solid rgba(255, 255, 255, 0.45)' : '1px solid rgba(255, 255, 255, 0.14)',
+                  background: 'rgba(255, 255, 255, 0.06)',
+                  border: '1px solid rgba(255, 255, 255, 0.16)',
                   color: '#FFFFFF',
                   fontWeight: 600,
                   borderRadius: '14px',
-                  cursor: 'pointer',
+                  textDecoration: 'none',
                   transition: 'all 0.2s ease',
-                  boxShadow: showFaqs ? '0 0 20px rgba(255, 255, 255, 0.15)' : 'none',
                 }}
               >
                 <HelpCircle size={20} color="#FFFFFF" />
-                <span>Q/A s ({showFaqs ? 'Hide FAQ' : '60 Questions'})</span>
-                <ChevronDown
-                  size={18}
-                  style={{
-                    transform: showFaqs ? 'rotate(180deg)' : 'rotate(0deg)',
-                    transition: 'transform 0.25s ease',
-                  }}
-                />
-              </button>
+                <span>Q/A s (60 Platform Questions)</span>
+                <ArrowRight size={18} />
+              </Link>
             </div>
 
             <div
@@ -210,13 +191,6 @@ export default function DemoPage() {
             </div>
           </div>
         </div>
-
-        {/* Expandable Q&A Knowledge Base Section */}
-        {showFaqs && (
-          <div style={{ animation: 'fadeInUp 0.35s ease-out' }}>
-            <DemoFaqSection onClose={() => setShowFaqs(false)} />
-          </div>
-        )}
 
         {/* Live Calling Cockpit Plate */}
         <div style={{ maxWidth: '1000px', margin: '0 auto 4rem', width: '100%' }}>

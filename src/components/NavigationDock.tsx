@@ -17,7 +17,8 @@ import {
   Wrench, 
   MessageSquare,
   PhoneCall,
-  ArrowUpRight 
+  ArrowUpRight,
+  HelpCircle
 } from 'lucide-react';
 
 interface NavigationDockProps {
@@ -49,6 +50,7 @@ export default function NavigationDock({
     { label: 'Services', href: '/services', icon: Wrench, subtitle: 'Enterprise Editions & Telemetry', isSection: false },
     { label: 'Contact', href: '/contact', icon: MessageSquare, subtitle: 'Direct Desk +91 8106668552', isSection: false },
     { label: 'Live Demo', href: '/demo', icon: PhoneCall, subtitle: 'Live Voice Agent Calling', isSection: false },
+    { label: 'Q/A s', href: '/qa', icon: HelpCircle, subtitle: '60 Platform Questions & Answers', isSection: false },
   ];
 
   const toggleFullscreen = () => {

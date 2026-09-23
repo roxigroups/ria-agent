@@ -17,7 +17,8 @@ import {
   Wrench,
   MessageSquare,
   PhoneCall,
-  ArrowUpRight
+  ArrowUpRight,
+  HelpCircle
 } from 'lucide-react';
 
 interface HeaderNavProps {
@@ -39,6 +40,7 @@ export default function HeaderNav({
     { label: 'Services', href: '/services', icon: Wrench, subtitle: 'Enterprise Editions & Telemetry' },
     { label: 'Contact', href: '/contact', icon: MessageSquare, subtitle: 'Direct Desk +91 8106668552' },
     { label: 'Live Demo', href: '/demo', icon: PhoneCall, subtitle: 'Live Voice Agent Calling' },
+    { label: 'Q/A s', href: '/qa', icon: HelpCircle, subtitle: '60 Platform Questions & Answers' },
   ];
 
   const toggleFullscreen = () => {
