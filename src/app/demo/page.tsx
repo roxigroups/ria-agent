@@ -122,57 +122,21 @@ export default function DemoPage() {
               width: '100%',
             }}
           >
-            {/* Primary Action Button Group */}
-            <div
+            <button
+              onClick={handleSupportClick}
+              className="btn-skeuo-primary"
+              id="hero-start-voice-call-btn"
               style={{
-                display: 'flex',
+                padding: '1.15rem 2.8rem',
+                fontSize: '1.08rem',
+                display: 'inline-flex',
                 alignItems: 'center',
-                justifyContent: 'center',
-                gap: '1rem',
-                flexWrap: 'wrap',
-                width: '100%',
+                gap: '0.85rem',
               }}
             >
-              <button
-                onClick={handleSupportClick}
-                className="btn-skeuo-primary"
-                id="hero-start-voice-call-btn"
-                style={{
-                  padding: '1.15rem 2.8rem',
-                  fontSize: '1.08rem',
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: '0.85rem',
-                }}
-              >
-                <PhoneCall size={22} color="#000000" />
-                <span>Talk to RIA (Start Live Call)</span>
-              </button>
-
-              <Link
-                href="/qa"
-                className="btn-skeuo-secondary"
-                id="link-demo-faqs-btn"
-                style={{
-                  padding: '1.15rem 2.2rem',
-                  fontSize: '1.02rem',
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: '0.75rem',
-                  background: 'rgba(255, 255, 255, 0.06)',
-                  border: '1px solid rgba(255, 255, 255, 0.16)',
-                  color: '#FFFFFF',
-                  fontWeight: 600,
-                  borderRadius: '14px',
-                  textDecoration: 'none',
-                  transition: 'all 0.2s ease',
-                }}
-              >
-                <HelpCircle size={20} color="#FFFFFF" />
-                <span>Q/A s (60 Platform Questions)</span>
-                <ArrowRight size={18} />
-              </Link>
-            </div>
+              <PhoneCall size={22} color="#000000" />
+              <span>Talk to RIA (Start Live Call)</span>
+            </button>
 
             <div
               style={{

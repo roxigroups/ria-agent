@@ -289,6 +289,29 @@ export default function NavigationDock({
           >
             Live Demo
           </Link>
+
+          {/* Q/A s (Separate Dedicated FAQ Page) */}
+          <Link
+            href="/qa"
+            style={{
+              padding: '0.45rem 1.1rem',
+              borderRadius: '9999px',
+              background: 'transparent',
+              color: 'var(--white-muted)',
+              fontWeight: 600,
+              fontSize: '0.82rem',
+              fontFamily: 'var(--font-mono)',
+              letterSpacing: '0.05em',
+              textTransform: 'uppercase',
+              border: '1px solid transparent',
+              textDecoration: 'none',
+              cursor: 'pointer',
+              transition: 'all 0.2s cubic-bezier(0.16, 1, 0.3, 1)',
+              display: 'inline-block',
+            }}
+          >
+            Q/A s
+          </Link>
         </nav>
 
         {/* Right Header Status & Controls */}
