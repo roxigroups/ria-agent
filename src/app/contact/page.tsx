@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { MessageSquare, Phone, Mail, Building, User, CheckCircle, ArrowRight } from 'lucide-react';
+import { MessageSquare, Phone, Mail, Building, User, CheckCircle, ArrowRight, Send } from 'lucide-react';
 import HeaderNav from '@/components/HeaderNav';
 import ParticleCanvas from '@/components/ParticleCanvas';
 import TiltCard from '@/components/TiltCard';
@@ -14,9 +14,10 @@ export default function ContactPage() {
     gmail: '',
     company: '',
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (!formData.name || !formData.phone) {
@@ -24,23 +25,28 @@ export default function ContactPage() {
       return;
     }
 
-    setSubmitted(true);
+    setIsSubmitting(true);
 
-    // Format structured message for WhatsApp delivery to +918106668552
-    const message = `*New Inquiry - RIA Intelligence Autonomous Fleet*\n\n` +
-      `*Name:* ${formData.name}\n` +
-      `*Phone:* ${formData.phone}\n` +
-      `*Gmail/Email:* ${formData.gmail || 'Not specified'}\n` +
-      `*Company Name:* ${formData.company || 'Not specified'}\n\n` +
-      `I would like to discuss deploying Autonomous AI Collection Agents.`;
-
-    const encodedMessage = encodeURIComponent(message);
-    const whatsappUrl = `https://api.whatsapp.com/send?phone=917248199999&text=${encodedMessage}`;
-
-    // Open WhatsApp directly to +918106668552
-    setTimeout(() => {
-      window.open(whatsappUrl, '_blank');
-    }, 600);
+    try {
+      await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: formData.name,
+          phone: formData.phone,
+          email: formData.gmail,
+          company: formData.company,
+          notes: 'Submitted via Website Contact Form',
+        }),
+      });
+      setSubmitted(true);
+      setFormData({ name: '', phone: '', gmail: '', company: '' });
+    } catch (err) {
+      console.error('Submission error:', err);
+      setSubmitted(true);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -98,7 +104,7 @@ export default function ContactPage() {
             }}
           >
             Fill out your details below. Your information will route directly to our fleet operations desk at{' '}
-            <strong style={{ color: '#FFFFFF' }}>+91 7248199999</strong> via WhatsApp.
+            <strong style={{ color: '#FFFFFF' }}>+91 7248199999</strong>.
           </p>
         </div>
 
@@ -179,7 +185,7 @@ export default function ContactPage() {
                       fontFamily: 'var(--font-mono)',
                     }}
                   >
-                    DIRECT ROUTING TO: +91 8106668552
+                    DIRECT ROUTING TO: +91 7248199999
                   </p>
                 </div>
 
@@ -207,7 +213,7 @@ export default function ContactPage() {
                       boxShadow: '0 0 6px #27c93f',
                     }}
                   />
-                  <span>WHATSAPP READY</span>
+                  <span>DIRECT DISPATCH</span>
                 </div>
               </div>
 
@@ -385,21 +391,21 @@ export default function ContactPage() {
                   <div
                     style={{
                       marginBottom: '1.5rem',
-                      padding: '1rem 1.35rem',
+                      padding: '1.1rem 1.35rem',
                       backgroundColor: '#E8F5E9',
                       border: '1.5px solid #4CAF50',
                       borderRadius: '10px',
                       color: '#1B5E20',
                       fontFamily: 'var(--font-mono)',
-                      fontSize: '0.88rem',
+                      fontSize: '0.9rem',
                       display: 'flex',
                       alignItems: 'center',
                       gap: '0.75rem',
                       fontWeight: 600,
                     }}
                   >
-                    <CheckCircle size={18} color="#4CAF50" />
-                    <span>Inquiry logged! Opening direct WhatsApp chat with +91 8106668552...</span>
+                    <CheckCircle size={20} color="#4CAF50" />
+                    <span>Thank you! Your inquiry has been submitted successfully. Our team will contact you shortly.</span>
                   </div>
                 )}
 
@@ -416,11 +422,12 @@ export default function ContactPage() {
                   }}
                 >
                   <div style={{ color: '#666666', fontSize: '0.85rem' }}>
-                    Instant dispatch to <strong>+91 8106668552</strong>
+                    Direct inquiry to <strong>+91 7248199999</strong>
                   </div>
 
                   <button
                     type="submit"
+                    disabled={isSubmitting}
                     className="responsive-btn-full"
                     style={{
                       display: 'inline-flex',
@@ -428,20 +435,20 @@ export default function ContactPage() {
                       justifyContent: 'center',
                       gap: '0.75rem',
                       padding: '1rem 2.25rem',
-                      backgroundColor: '#000000',
+                      backgroundColor: isSubmitting ? '#444444' : '#000000',
                       color: '#FFFFFF',
                       borderRadius: '12px',
                       border: '1px solid #000000',
                       fontWeight: 800,
                       fontSize: '0.95rem',
                       letterSpacing: '0.04em',
-                      cursor: 'pointer',
+                      cursor: isSubmitting ? 'not-allowed' : 'pointer',
                       boxShadow: '0 6px 0 #333333, 0 12px 20px rgba(0, 0, 0, 0.25)',
                       transition: 'all 0.12s ease',
                     }}
                   >
-                    <MessageSquare size={18} color="#FFFFFF" />
-                    <span>Submit &amp; Chat on WhatsApp</span>
+                    <Send size={18} color="#FFFFFF" />
+                    <span>{isSubmitting ? 'Submitting...' : 'Submit Inquiry'}</span>
                   </button>
                 </div>
               </form>
