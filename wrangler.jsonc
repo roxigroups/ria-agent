@@ -7,6 +7,9 @@
 		"nodejs_compat",
 		"global_fetch_strictly_public"
 	],
+	"vars": {
+		"GOOGLE_SHEET_WEBHOOK_URL": "https://script.google.com/macros/s/AKfycbzyfvNODIVjU4AXXkKug0qTPTse7ICALpO5h4689M27A5dD29fiy5dQrxg9cjE-cuvS4g/exec"
+	},
 	"assets": {
 		"directory": ".open-next/assets",
 		"binding": "ASSETS"
