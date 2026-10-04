@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { MessageSquare, Phone, Mail, Building, User, CheckCircle, ArrowRight } from 'lucide-react';
+import { Send, Phone, Mail, Building, User, CheckCircle, ShieldCheck } from 'lucide-react';
 import HeaderNav from '@/components/HeaderNav';
 import ParticleCanvas from '@/components/ParticleCanvas';
 import TiltCard from '@/components/TiltCard';
@@ -17,7 +17,7 @@ export default function ContactPage() {
   const [submitted, setSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Google Sheets Webhook URL from environment variables or custom config
+  // Google Sheets Webhook URL from environment variables
   const GOOGLE_SHEET_URL = process.env.NEXT_PUBLIC_GOOGLE_SHEET_URL || '';
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -30,24 +30,25 @@ export default function ContactPage() {
 
     setIsSubmitting(true);
 
-    const submissionPayload = {
-      name: formData.name,
-      phone: formData.phone,
-      gmail: formData.gmail || 'Not specified',
-      company: formData.company || 'Not specified',
-      timestamp: new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' }),
+    // Matches the exact fields expected by your Google Apps Script:
+    // data.name, data.phone, data.company, data.email, data.notes
+    const payload = {
+      name: formData.name.trim(),
+      phone: formData.phone.trim(),
+      company: formData.company.trim() || 'Not specified',
+      email: formData.gmail.trim() || 'Not specified',
+      notes: 'Website Contact Page Submission',
     };
 
-    // 1. Post data to Google Sheets Web App if URL is provided
     if (GOOGLE_SHEET_URL) {
       try {
         await fetch(GOOGLE_SHEET_URL, {
           method: 'POST',
-          mode: 'no-cors', // standard mode for Google Apps Script Web App redirects
+          mode: 'no-cors', // Standard mode for Google Apps Script Web App redirects
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify(submissionPayload),
+          body: JSON.stringify(payload),
         });
       } catch (err) {
         console.error('Error recording to Google Sheets:', err);
@@ -57,23 +58,13 @@ export default function ContactPage() {
     setIsSubmitting(false);
     setSubmitted(true);
 
-    // 2. Format structured message for WhatsApp delivery to +91 7248199999
-    const message =
-      `*New Inquiry - RIA Intelligence Autonomous Fleet*\n\n` +
-      `*Name:* ${formData.name}\n` +
-      `*Phone:* ${formData.phone}\n` +
-      `*Gmail/Email:* ${formData.gmail || 'Not specified'}\n` +
-      `*Company Name:* ${formData.company || 'Not specified'}\n` +
-      `*Timestamp:* ${submissionPayload.timestamp}\n\n` +
-      `I would like to discuss deploying Autonomous AI Collection Agents.`;
-
-    const encodedMessage = encodeURIComponent(message);
-    const whatsappUrl = `https://api.whatsapp.com/send?phone=917248199999&text=${encodedMessage}`;
-
-    // Open WhatsApp directly
-    setTimeout(() => {
-      window.open(whatsappUrl, '_blank');
-    }, 600);
+    // Clear the form fields after successful submission
+    setFormData({
+      name: '',
+      phone: '',
+      gmail: '',
+      company: '',
+    });
   };
 
   return (
@@ -130,8 +121,7 @@ export default function ContactPage() {
               lineHeight: 1.6,
             }}
           >
-            Fill out your details below. Your information will route directly to our fleet operations desk at{' '}
-            <strong style={{ color: '#FFFFFF' }}>+91 7248199999</strong> via WhatsApp.
+            Fill out your details below. Our enterprise AI team will review your inquiry and contact you directly.
           </p>
         </div>
 
@@ -202,7 +192,7 @@ export default function ContactPage() {
                       letterSpacing: '-0.01em',
                     }}
                   >
-                    Enterprise Client Dispatch Form
+                    Enterprise Client Inquiry Form
                   </h3>
                   <p
                     style={{
@@ -212,7 +202,7 @@ export default function ContactPage() {
                       fontFamily: 'var(--font-mono)',
                     }}
                   >
-                    DIRECT ROUTING TO: +91 8106668552
+                    DIRECT TO ENTERPRISE OPERATIONS DESK
                   </p>
                 </div>
 
@@ -240,7 +230,7 @@ export default function ContactPage() {
                       boxShadow: '0 0 6px #27c93f',
                     }}
                   />
-                  <span>WHATSAPP READY</span>
+                  <span>SECURE DISPATCH READY</span>
                 </div>
               </div>
 
@@ -432,7 +422,7 @@ export default function ContactPage() {
                     }}
                   >
                     <CheckCircle size={18} color="#4CAF50" />
-                    <span>Inquiry saved &amp; logged! Opening WhatsApp chat with our team...</span>
+                    <span>Inquiry submitted successfully! Our enterprise team will review your details and contact you shortly.</span>
                   </div>
                 )}
 
@@ -449,7 +439,7 @@ export default function ContactPage() {
                   }}
                 >
                   <div style={{ color: '#666666', fontSize: '0.85rem' }}>
-                    Instant dispatch to <strong>+91 7248199999</strong>
+                    Direct dispatch to <strong>RIA Operations Team</strong>
                   </div>
 
                   <button
@@ -475,8 +465,8 @@ export default function ContactPage() {
                       transition: 'all 0.12s ease',
                     }}
                   >
-                    <MessageSquare size={18} color="#FFFFFF" />
-                    <span>{isSubmitting ? 'Saving to Sheets...' : 'Submit & Chat on WhatsApp'}</span>
+                    <Send size={18} color="#FFFFFF" />
+                    <span>{isSubmitting ? 'Submitting...' : 'Submit Inquiry'}</span>
                   </button>
                 </div>
               </form>
