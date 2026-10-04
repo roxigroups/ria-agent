@@ -15,8 +15,12 @@ export default function ContactPage() {
     company: '',
   });
   const [submitted, setSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  // Google Sheets Webhook URL from environment variables or custom config
+  const GOOGLE_SHEET_URL = process.env.NEXT_PUBLIC_GOOGLE_SHEET_URL || '';
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (!formData.name || !formData.phone) {
@@ -24,20 +28,49 @@ export default function ContactPage() {
       return;
     }
 
+    setIsSubmitting(true);
+
+    const submissionPayload = {
+      name: formData.name,
+      phone: formData.phone,
+      gmail: formData.gmail || 'Not specified',
+      company: formData.company || 'Not specified',
+      timestamp: new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' }),
+    };
+
+    // 1. Post data to Google Sheets Web App if URL is provided
+    if (GOOGLE_SHEET_URL) {
+      try {
+        await fetch(GOOGLE_SHEET_URL, {
+          method: 'POST',
+          mode: 'no-cors', // standard mode for Google Apps Script Web App redirects
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(submissionPayload),
+        });
+      } catch (err) {
+        console.error('Error recording to Google Sheets:', err);
+      }
+    }
+
+    setIsSubmitting(false);
     setSubmitted(true);
 
-    // Format structured message for WhatsApp delivery to +918106668552
-    const message = `*New Inquiry - RIA Intelligence Autonomous Fleet*\n\n` +
+    // 2. Format structured message for WhatsApp delivery to +91 7248199999
+    const message =
+      `*New Inquiry - RIA Intelligence Autonomous Fleet*\n\n` +
       `*Name:* ${formData.name}\n` +
       `*Phone:* ${formData.phone}\n` +
       `*Gmail/Email:* ${formData.gmail || 'Not specified'}\n` +
-      `*Company Name:* ${formData.company || 'Not specified'}\n\n` +
+      `*Company Name:* ${formData.company || 'Not specified'}\n` +
+      `*Timestamp:* ${submissionPayload.timestamp}\n\n` +
       `I would like to discuss deploying Autonomous AI Collection Agents.`;
 
     const encodedMessage = encodeURIComponent(message);
     const whatsappUrl = `https://api.whatsapp.com/send?phone=917248199999&text=${encodedMessage}`;
 
-    // Open WhatsApp directly to +918106668552
+    // Open WhatsApp directly
     setTimeout(() => {
       window.open(whatsappUrl, '_blank');
     }, 600);
@@ -399,7 +432,7 @@ export default function ContactPage() {
                     }}
                   >
                     <CheckCircle size={18} color="#4CAF50" />
-                    <span>Inquiry logged! Opening direct WhatsApp chat with +91 8106668552...</span>
+                    <span>Inquiry saved &amp; logged! Opening WhatsApp chat with our team...</span>
                   </div>
                 )}
 
@@ -416,11 +449,12 @@ export default function ContactPage() {
                   }}
                 >
                   <div style={{ color: '#666666', fontSize: '0.85rem' }}>
-                    Instant dispatch to <strong>+91 8106668552</strong>
+                    Instant dispatch to <strong>+91 7248199999</strong>
                   </div>
 
                   <button
                     type="submit"
+                    disabled={isSubmitting}
                     className="responsive-btn-full"
                     style={{
                       display: 'inline-flex',
@@ -435,13 +469,14 @@ export default function ContactPage() {
                       fontWeight: 800,
                       fontSize: '0.95rem',
                       letterSpacing: '0.04em',
-                      cursor: 'pointer',
+                      cursor: isSubmitting ? 'not-allowed' : 'pointer',
+                      opacity: isSubmitting ? 0.7 : 1,
                       boxShadow: '0 6px 0 #333333, 0 12px 20px rgba(0, 0, 0, 0.25)',
                       transition: 'all 0.12s ease',
                     }}
                   >
                     <MessageSquare size={18} color="#FFFFFF" />
-                    <span>Submit &amp; Chat on WhatsApp</span>
+                    <span>{isSubmitting ? 'Saving to Sheets...' : 'Submit & Chat on WhatsApp'}</span>
                   </button>
                 </div>
               </form>
