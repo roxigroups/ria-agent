@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import { AccessToken } from 'livekit-server-sdk';
 import { getCloudflareContext } from '@opennextjs/cloudflare';
 
+export const dynamic = 'force-dynamic';
+
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
   const name = (searchParams.get('name') || '').trim().slice(0, 60) || 'Guest User';
@@ -31,12 +33,14 @@ export async function GET(request: NextRequest) {
     cfEnv.LIVEKIT_API_KEY ||
     process.env.LIVEKIT_API_KEY ||
     process.env.NEXT_PUBLIC_LIVEKIT_API_KEY ||
-    process.env.LK_API_KEY;
+    process.env.LK_API_KEY ||
+    'API972YHDQx3aRr';
 
   const apiSecret =
     cfEnv.LIVEKIT_API_SECRET ||
     process.env.LIVEKIT_API_SECRET ||
-    process.env.LK_API_SECRET;
+    process.env.LK_API_SECRET ||
+    'bZG4vEQ5MGIj3w48xgpnh3ZxmzMQMvzzjZLYy6gfuJb';
 
   try {
     if (apiKey && apiSecret) {

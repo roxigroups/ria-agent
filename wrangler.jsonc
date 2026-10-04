@@ -39,5 +39,11 @@
 		"issue_detection": {
 			"enabled": true
 		}
+	},
+	"vars": {
+		"LIVEKIT_API_KEY": "API972YHDQx3aRr",
+		"LIVEKIT_API_SECRET": "bZG4vEQ5MGIj3w48xgpnh3ZxmzMQMvzzjZLYy6gfuJb",
+		"NEXT_PUBLIC_LIVEKIT_URL": "wss://collection-agent-r45cqdci.livekit.cloud",
+		"LIVEKIT_URL": "wss://collection-agent-r45cqdci.livekit.cloud"
 	}
 }
