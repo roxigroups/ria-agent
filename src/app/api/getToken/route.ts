@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { AccessToken } from 'livekit-server-sdk';
+import { getCloudflareContext } from '@opennextjs/cloudflare';
 
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
@@ -17,9 +18,25 @@ export async function GET(request: NextRequest) {
     room = 'room-' + Math.random().toString(36).substring(2, 10);
   }
 
-  // Credentials come only from env (.env.local / hosting settings), never from source
-  const apiKey = process.env.LIVEKIT_API_KEY || process.env.NEXT_PUBLIC_LIVEKIT_API_KEY || process.env.LK_API_KEY;
-  const apiSecret = process.env.LIVEKIT_API_SECRET || process.env.LK_API_SECRET;
+  // Attempt to read from Cloudflare context (workerd runtime) as well as process.env
+  let cfEnv: any = {};
+  try {
+    const ctx = await getCloudflareContext({ async: true });
+    cfEnv = ctx?.env || {};
+  } catch {
+    // Fallback when running outside Cloudflare runtime (e.g. local next dev)
+  }
+
+  const apiKey =
+    cfEnv.LIVEKIT_API_KEY ||
+    process.env.LIVEKIT_API_KEY ||
+    process.env.NEXT_PUBLIC_LIVEKIT_API_KEY ||
+    process.env.LK_API_KEY;
+
+  const apiSecret =
+    cfEnv.LIVEKIT_API_SECRET ||
+    process.env.LIVEKIT_API_SECRET ||
+    process.env.LK_API_SECRET;
 
   try {
     if (apiKey && apiSecret) {
