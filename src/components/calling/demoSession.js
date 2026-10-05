@@ -60,8 +60,29 @@ export function loadVisitor() {
   return saved?.name && saved?.phone ? saved : null;
 }
 
+export async function logDemoLeadToSheet(visitor) {
+  const url = process.env.NEXT_PUBLIC_DEMO_SHEET_URL || process.env.NEXT_PUBLIC_GOOGLE_SHEET_URL;
+  if (!url || !visitor?.name || !visitor?.phone) return;
+  try {
+    await fetch(url, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        name: visitor.name,
+        phone: visitor.phone,
+        source: 'Tap to Talk Voice Demo',
+        timestamp: new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' }),
+      }),
+    });
+  } catch (err) {
+    console.error('Error logging demo lead to Google Sheet:', err);
+  }
+}
+
 export function saveVisitor(visitor) {
   writeStore(VISITOR_KEY, visitor);
+  logDemoLeadToSheet(visitor);
 }
 
 const cleanPhone = (value) => {
