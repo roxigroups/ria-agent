@@ -18,7 +18,8 @@ import {
   MessageSquare,
   PhoneCall,
   ArrowUpRight,
-  HelpCircle
+  HelpCircle,
+  BookOpen
 } from 'lucide-react';
 
 interface HeaderNavProps {
@@ -38,6 +39,7 @@ export default function HeaderNav({
     { label: 'Home', href: '/', icon: Home, subtitle: 'Autonomous Collection Core' },
     { label: 'About', href: '/about', icon: Info, subtitle: 'Latency & Architecture' },
     { label: 'Services', href: '/services', icon: Wrench, subtitle: 'Enterprise Editions & Telemetry' },
+    { label: 'Insights', href: '/insights', icon: BookOpen, subtitle: 'Research & Distribution Intelligence' },
     { label: 'Contact', href: '/contact', icon: MessageSquare, subtitle: 'Direct Desk +91 8106668552' },
     { label: 'Live Demo', href: '/demo', icon: PhoneCall, subtitle: 'Live Voice Agent Calling' },
     { label: 'Q/A s', href: '/qa', icon: HelpCircle, subtitle: '60 Platform Questions & Answers' },

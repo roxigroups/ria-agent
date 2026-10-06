@@ -18,7 +18,8 @@ import {
   MessageSquare,
   PhoneCall,
   ArrowUpRight,
-  HelpCircle
+  HelpCircle,
+  BookOpen
 } from 'lucide-react';
 
 interface NavigationDockProps {
@@ -48,6 +49,7 @@ export default function NavigationDock({
     { label: 'Home', href: '/', icon: Home, subtitle: 'Autonomous Collection Core', isSection: true },
     { label: 'About', href: '/about', icon: Info, subtitle: 'Latency & Architecture', isSection: false },
     { label: 'Services', href: '/services', icon: Wrench, subtitle: 'Enterprise Editions & Telemetry', isSection: false },
+    { label: 'Insights', href: '/insights', icon: BookOpen, subtitle: 'Research & Distribution Intelligence', isSection: false },
     { label: 'Contact', href: '/contact', icon: MessageSquare, subtitle: 'Direct Desk +91 8106668552', isSection: false },
     { label: 'Live Demo', href: '/demo', icon: PhoneCall, subtitle: 'Live Voice Agent Calling', isSection: false },
     { label: 'Q/A s', href: '/qa', icon: HelpCircle, subtitle: '60 Platform Questions & Answers', isSection: false },
@@ -242,6 +244,29 @@ export default function NavigationDock({
             }}
           >
             Services
+          </Link>
+
+          {/* Insights (Dedicated /insights page) */}
+          <Link
+            href="/insights"
+            style={{
+              padding: '0.45rem 1.1rem',
+              borderRadius: '9999px',
+              background: 'transparent',
+              color: 'var(--white-muted)',
+              fontWeight: 600,
+              fontSize: '0.82rem',
+              fontFamily: 'var(--font-mono)',
+              letterSpacing: '0.05em',
+              textTransform: 'uppercase',
+              border: '1px solid transparent',
+              textDecoration: 'none',
+              cursor: 'pointer',
+              transition: 'all 0.2s cubic-bezier(0.16, 1, 0.3, 1)',
+              display: 'inline-block',
+            }}
+          >
+            Insights
           </Link>
 
           {/* Contact (Dedicated /contact page) */}
