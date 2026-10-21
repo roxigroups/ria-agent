@@ -108,21 +108,23 @@ IST = timezone(timedelta(hours=5, minutes=30))
 
 
 
-# Biases OpenAI STT toward native scripts and product terms without naming one
-
-# language, so it still auto-detects whichever language the visitor speaks
-
+# Biases OpenAI STT toward native scripts and product terms without misdetecting Telugu as Hindi
 STT_PROMPT = (
-
-    "Indian business conversation. The speaker may use any Indian language mixed "
-
-    "with English business words like customers, payment, follow-up, demo, trial. "
-
-    "Write each language in its native script, and English speech in English. "
-
+    "Telugu and Indian business conversation in natural Tanglish (Telugu mixed with English). "
+    "The speaker is speaking in Telugu (తెలుగు) or English. "
+    "Do NOT transcribe Telugu speech into Hindi or Devanagari script. "
+    "Write Telugu speech strictly in Telugu script (తెలుగు లిపి) and English words in English. "
+    "Common terms: నమస్తే, ఎలా ఉన్నారు, పేమెంట్, బిల్, కస్టమర్, అకౌంట్, డ్యూ, కలెక్షన్, ఫాలో-అప్, ఆర్డర్, అవును, కాదు, మాట్లాడండి. "
     "Product names: RIA, Roxy, Tally, Zoho Books, Busy, WhatsApp."
-
 )
+
+# Common Whisper ghost hallucinations on silence/noise in Indian audio
+STT_HALLUCINATION_BLACKLIST = {
+    "धन्यवाद", "धन्यवाद।", "नमस्ते", "नमस्ते।", "हाँ", "हाँ।", "हाँ जी", "अच्छा",
+    "थैंक यू", "थैंक यू।", "देखने के लिए धन्यवाद", "वीडियो देखने के लिए धन्यवाद",
+    "कृपया सब्सक्राइब करें", "लाइक करें", "चैनल को सब्सक्राइब करें", "सब्सक्राइब करें",
+    "thank you for watching", "thanks for watching", "subtitles by", "please subscribe",
+}
 
 
 
@@ -515,16 +517,19 @@ def make_stt(vad=None):
     # native script, so RIA can follow Telugu, Hindi, Tamil, Kannada, etc.
 
     model = os.getenv("OPENAI_STT_MODEL", "gpt-4o-mini-transcribe")
+    # Pin STT to Telugu by default (or OPENAI_STT_LANGUAGE) to stop Whisper from
+    # misdetecting Telugu speech as Hindi and writing unwanted Hindi sentences.
+    openai_lang = os.getenv("OPENAI_STT_LANGUAGE", os.getenv("GREETING_LANGUAGE", "te")).strip().lower()
+    stt_kwargs = {}
+    if openai_lang in ("auto", "none", "detect", ""):
+        stt_kwargs["detect_language"] = True
+    else:
+        stt_kwargs["language"] = openai_lang
+        stt_kwargs["detect_language"] = False
 
     if model == "gpt-live-transcribe":
-
-        # Streams text while the visitor speaks, so the transcript is ready right
-
-        # after they stop. It has no server-side endpointing: our VAD commits.
-
-        return openai.STT(model=model, detect_language=True, prompt=STT_PROMPT, vad=vad)
-
-    return openai.STT(model=model, detect_language=True, prompt=STT_PROMPT, use_realtime=True)
+        return openai.STT(model=model, prompt=STT_PROMPT, vad=vad, **stt_kwargs)
+    return openai.STT(model=model, prompt=STT_PROMPT, use_realtime=True, **stt_kwargs)
 
 
 
@@ -1003,16 +1008,16 @@ class RiaAgent(Agent):
 
 
         # Drop transcripts that are just noise artifacts (empty or punctuation only).
-
-        # Don't use a length check: short Telugu/Hindi replies like "హా"/"जी" are real.
-
+        # Don't use a length check: short Telugu/Hindi replies like "హా"/"జీ" are real.
         if not re.search(r"[^\W_]", text):
-
             logger.info("Ignoring noise-like transcript: %r", text)
-
             raise StopResponse()
 
-
+        # Drop known Whisper phantom hallucinations on background noise/silence
+        clean_text = text.strip()
+        if clean_text in STT_HALLUCINATION_BLACKLIST or clean_text.lower() in STT_HALLUCINATION_BLACKLIST:
+            logger.info("Ignoring known STT phantom hallucination: %r", text)
+            raise StopResponse()
 
         logger.info("User (%s): %s", detect_language(text, self._languages.language or "en"), text)
 

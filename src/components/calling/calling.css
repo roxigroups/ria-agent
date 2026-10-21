@@ -645,11 +645,22 @@
   display: none;
 }
 
-/* Mobile number field (+91 prefix) in the start-call form */
+/* Mobile number field (28 countries selector + input) in the start-call form */
 .modal-phone-group {
   display: flex;
   align-items: stretch;
   gap: 0.6rem;
+  position: relative;
+  width: 100%;
+}
+
+.modal-phone-group .country-select-container {
+  display: flex;
+  flex-shrink: 0;
+}
+
+.modal-phone-group .country-select-trigger {
+  min-height: 52px;
 }
 
 .modal-phone-prefix {

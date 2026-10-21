@@ -24,6 +24,8 @@ import {
   useHangUp,
   validateVisitor,
 } from '@/components/calling/demoSession';
+import CountrySelect from '@/components/calling/CountrySelect';
+import { DEFAULT_COUNTRY, findCountryByCodeOrDial } from '@/data/countries';
 import './LiveDemoCard.css';
 
 export default function LiveDemoCard() {
@@ -33,6 +35,7 @@ export default function LiveDemoCard() {
   const [visitor, setVisitor] = useState(null);
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
+  const [selectedCountry, setSelectedCountry] = useState(DEFAULT_COUNTRY);
   const [formError, setFormError] = useState('');
   const [token, setToken] = useState(null);
   const [notice, setNotice] = useState('');
@@ -43,8 +46,11 @@ export default function LiveDemoCard() {
     const saved = loadVisitor();
     if (saved) {
       setVisitor(saved);
-      setName(saved.name);
-      setPhone(saved.phone);
+      setName(saved.name || '');
+      setPhone(saved.nationalPhone || saved.rawDigits || saved.phone || '');
+      if (saved.dialCode) {
+        setSelectedCountry(findCountryByCodeOrDial(saved.dialCode));
+      }
     }
   }, []);
 
@@ -77,7 +83,7 @@ export default function LiveDemoCard() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    const { visitor: who, error } = validateVisitor(name, phone);
+    const { visitor: who, error } = validateVisitor(name, phone, selectedCountry.dialCode);
     if (error) return setFormError(error);
     setFormError('');
     saveVisitor(who);
@@ -148,12 +154,18 @@ export default function LiveDemoCard() {
               autoFocus
             />
             <div className="ld-phone">
-              <span className="ld-phone-prefix">🇮🇳 +91</span>
+              <CountrySelect
+                selectedCountry={selectedCountry}
+                onSelect={(country) => {
+                  setSelectedCountry(country);
+                  setFormError('');
+                }}
+              />
               <input
                 className="ld-input ld-input-phone"
                 type="tel"
                 inputMode="numeric"
-                placeholder="Mobile number"
+                placeholder={selectedCountry.placeholder || 'Mobile number'}
                 value={phone}
                 onChange={(e) => {
                   setPhone(e.target.value);
@@ -229,7 +241,7 @@ export default function LiveDemoCard() {
       </div>
 
       <div className="ld-card-foot">
-        <span>Telugu · Hindi · English</span>
+        <span>29 Languages</span>
         <span className="ld-sep">·</span>
         <span>code-mixed</span>
         <span className="ld-sep">·</span>

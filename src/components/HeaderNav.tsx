@@ -19,7 +19,8 @@ import {
   PhoneCall,
   ArrowUpRight,
   HelpCircle,
-  BookOpen
+  BookOpen,
+  Tag
 } from 'lucide-react';
 
 interface HeaderNavProps {
@@ -42,6 +43,7 @@ export default function HeaderNav({
     { label: 'Insights', href: '/insights', icon: BookOpen, subtitle: 'Research & Distribution Intelligence' },
     { label: 'Contact', href: '/contact', icon: MessageSquare, subtitle: 'Direct Desk +91 8106668552' },
     { label: 'Live Demo', href: '/demo', icon: PhoneCall, subtitle: 'Live Voice Agent Calling' },
+    { label: 'Pricing', href: '/pricing', icon: Tag, subtitle: 'Collection Intelligence Pricing & Calculator' },
     { label: 'Q/A s', href: '/qa', icon: HelpCircle, subtitle: '60 Platform Questions & Answers' },
   ];
 
@@ -173,7 +175,7 @@ export default function HeaderNav({
                 key={item.label}
                 href={item.href}
                 style={{
-                  padding: '0.45rem 1.1rem',
+                  padding: '0.42rem 0.9rem',
                   borderRadius: '9999px',
                   background: isActive
                     ? 'linear-gradient(180deg, #FFFFFF 0%, #D4D4D4 100%)'

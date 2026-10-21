@@ -19,7 +19,8 @@ import {
   PhoneCall,
   ArrowUpRight,
   HelpCircle,
-  BookOpen
+  BookOpen,
+  Tag
 } from 'lucide-react';
 
 interface NavigationDockProps {
@@ -52,6 +53,7 @@ export default function NavigationDock({
     { label: 'Insights', href: '/insights', icon: BookOpen, subtitle: 'Research & Distribution Intelligence', isSection: false },
     { label: 'Contact', href: '/contact', icon: MessageSquare, subtitle: 'Direct Desk +91 8106668552', isSection: false },
     { label: 'Live Demo', href: '/demo', icon: PhoneCall, subtitle: 'Live Voice Agent Calling', isSection: false },
+    { label: 'Pricing', href: '/pricing', icon: Tag, subtitle: 'Collection Intelligence Pricing & Calculator', isSection: false },
     { label: 'Q/A s', href: '/qa', icon: HelpCircle, subtitle: '60 Platform Questions & Answers', isSection: false },
   ];
 
@@ -296,7 +298,7 @@ export default function NavigationDock({
           <Link
             href="/demo"
             style={{
-              padding: '0.45rem 1.1rem',
+              padding: '0.42rem 0.9rem',
               borderRadius: '9999px',
               background: 'transparent',
               color: 'var(--white-muted)',
@@ -315,11 +317,34 @@ export default function NavigationDock({
             Live Demo
           </Link>
 
+          {/* Pricing (Collection Intelligence) */}
+          <Link
+            href="/pricing"
+            style={{
+              padding: '0.42rem 0.9rem',
+              borderRadius: '9999px',
+              background: 'transparent',
+              color: 'var(--white-muted)',
+              fontWeight: 600,
+              fontSize: '0.82rem',
+              fontFamily: 'var(--font-mono)',
+              letterSpacing: '0.05em',
+              textTransform: 'uppercase',
+              border: '1px solid transparent',
+              textDecoration: 'none',
+              cursor: 'pointer',
+              transition: 'all 0.2s cubic-bezier(0.16, 1, 0.3, 1)',
+              display: 'inline-block',
+            }}
+          >
+            Pricing
+          </Link>
+
           {/* Q/A s (Separate Dedicated FAQ Page) */}
           <Link
             href="/qa"
             style={{
-              padding: '0.45rem 1.1rem',
+              padding: '0.42rem 0.9rem',
               borderRadius: '9999px',
               background: 'transparent',
               color: 'var(--white-muted)',

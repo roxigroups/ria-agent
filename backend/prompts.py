@@ -133,8 +133,8 @@ KEY MESSAGE
 """
 
 WELCOME_MESSAGES = {
-    "en": """
-Hi, I’m RIA — Roxy Intelligent AI. How are you? Hope you will have a great day.
-"""
+    "en": "Hi, I’m RIA — Roxy Intelligent AI. How are you? Hope you will have a great day.",
+    "te": "నమస్తే, నేను RIA — రాక్సీ ఇంటెలిజెంట్ AI. ఎలా ఉన్నారు? మీ రోజు బాగుండాలని కోరుకుంటున్నాను.",
+    "hi": "नमस्ते, मैं RIA हूँ — रॉक्सी इंटेलिजेंट AI. आप कैसे हैं? आशा है आपका दिन शुभ हो.",
 }
 

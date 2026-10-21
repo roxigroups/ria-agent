@@ -9,11 +9,23 @@ export async function GET(request: NextRequest) {
   const name = (searchParams.get('name') || '').trim().slice(0, 60) || 'Guest User';
   let room = searchParams.get('room');
 
-  // Optional Indian mobile number from the live demo; the agent saves it as a lead
-  const rawPhone = (searchParams.get('phone') || '').replace(/\D/g, '');
-  const phone = rawPhone.length === 12 && rawPhone.startsWith('91') ? rawPhone.slice(2) : rawPhone;
-  if (phone && !/^[6-9]\d{9}$/.test(phone)) {
-    return NextResponse.json({ error: 'Please enter a valid 10-digit mobile number.' }, { status: 400 });
+  // Optional mobile number from the live demo (28 supported countries)
+  const incomingPhone = (searchParams.get('phone') || '').trim();
+  const rawDigits = incomingPhone.replace(/\D/g, '');
+  let phone = '';
+
+  if (rawDigits) {
+    if (incomingPhone.startsWith('+91') || (rawDigits.length === 10 && /^[6-9]\d{9}$/.test(rawDigits))) {
+      const national = rawDigits.length === 12 && rawDigits.startsWith('91') ? rawDigits.slice(2) : rawDigits;
+      if (!/^[6-9]\d{9}$/.test(national)) {
+        return NextResponse.json({ error: 'Please enter a valid 10-digit mobile number.' }, { status: 400 });
+      }
+      phone = '+91' + national;
+    } else if (rawDigits.length >= 6 && rawDigits.length <= 15) {
+      phone = incomingPhone.startsWith('+') ? incomingPhone : '+' + rawDigits;
+    } else {
+      return NextResponse.json({ error: 'Please enter a valid phone number.' }, { status: 400 });
+    }
   }
 
   if (!room) {
@@ -48,7 +60,7 @@ export async function GET(request: NextRequest) {
         // Unique identity so two visitors with the same name never collide
         identity: 'visitor-' + Math.random().toString(36).substring(2, 10),
         name: name,
-        metadata: JSON.stringify({ phone: phone ? '+91' + phone : '' }),
+        metadata: JSON.stringify({ phone: phone || '' }),
       });
       at.addGrant({
         roomJoin: true,

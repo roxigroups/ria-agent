@@ -6,8 +6,6 @@ import HeaderNav from '@/components/HeaderNav';
 import ParticleCanvas from '@/components/ParticleCanvas';
 import Footer from '@/components/Footer';
 
-const AVATAR_IMAGE_BASE64 =
-  'data:image/webp;base64,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';
 
 interface ArticleItem {
   id: string;
@@ -1119,6 +1117,68 @@ export default function InsightsPage() {
               </span>{' '}
               // Distribution Intelligence // Online
             </p>
+
+            {/* Platform Stats Row */}
+            <div
+              style={{
+                display: 'flex',
+                gap: '0.85rem',
+                marginTop: '1.25rem',
+                flexWrap: 'wrap',
+              }}
+            >
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '0.65rem',
+                  padding: '0.55rem 0.95rem',
+                  background: 'rgba(255, 255, 255, 0.04)',
+                  border: '1px solid var(--line-2)',
+                  borderRadius: '10px',
+                  fontFamily: 'var(--mono)',
+                }}
+              >
+                <b style={{ color: '#FFFFFF', fontSize: '1.1rem', fontWeight: 800 }}>29</b>
+                <span style={{ color: 'var(--muted)', fontSize: '0.78rem', letterSpacing: '0.04em' }}>
+                  Languages
+                </span>
+              </div>
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '0.65rem',
+                  padding: '0.55rem 0.95rem',
+                  background: 'rgba(255, 255, 255, 0.04)',
+                  border: '1px solid var(--line-2)',
+                  borderRadius: '10px',
+                  fontFamily: 'var(--mono)',
+                }}
+              >
+                <b style={{ color: '#FFFFFF', fontSize: '1.1rem', fontWeight: 800 }}>46+ Yrs</b>
+                <span style={{ color: 'var(--muted)', fontSize: '0.78rem', letterSpacing: '0.04em' }}>
+                  Distribution Legacy
+                </span>
+              </div>
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '0.65rem',
+                  padding: '0.55rem 0.95rem',
+                  background: 'rgba(255, 255, 255, 0.04)',
+                  border: '1px solid var(--line-2)',
+                  borderRadius: '10px',
+                  fontFamily: 'var(--mono)',
+                }}
+              >
+                <b style={{ color: '#FFFFFF', fontSize: '1.1rem', fontWeight: 800 }}>G1–G6</b>
+                <span style={{ color: 'var(--muted)', fontSize: '0.78rem', letterSpacing: '0.04em' }}>
+                  Compliance Gates
+                </span>
+              </div>
+            </div>
             <div className="hero-actions">
               <a className="btn-action btn-primary-glow" href="#featured">
                 <span>Read Featured Insight</span>
@@ -1176,7 +1236,7 @@ export default function InsightsPage() {
                 <span className="ring" aria-hidden="true" />
                 <span className="ring ring-2" aria-hidden="true" />
                 <img
-                  src={AVATAR_IMAGE_BASE64}
+                  src="/images/ria-distribution-agent.jpg"
                   width={280}
                   height={280}
                   alt="RIA, the AI distribution agent"

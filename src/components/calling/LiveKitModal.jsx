@@ -5,6 +5,8 @@ import { LiveKitRoom, RoomAudioRenderer } from '@livekit/components-react';
 import '@livekit/components-styles';
 import SimpleVoiceAssistant from './SimpleVoiceAssistant';
 import { CloseIcon } from './Icons';
+import CountrySelect from './CountrySelect';
+import { DEFAULT_COUNTRY, findCountryByCodeOrDial } from '@/data/countries';
 import {
   DAILY_LIMIT,
   LIVEKIT_URL,
@@ -85,26 +87,17 @@ class LiveKitErrorBoundary extends Component {
   }
 }
 
-const LiveKitModal = ({ setShowSupport }) => {
-  const [isSubmittingName, setIsSubmittingName] = useState(true);
+const LiveKitModal = ({ setShowSupport, initialVisitor = null, autoConnect = false }) => {
+  const [isSubmittingName, setIsSubmittingName] = useState(!autoConnect);
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
+  const [selectedCountry, setSelectedCountry] = useState(DEFAULT_COUNTRY);
   const [token, setToken] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
   const [callsLeft, setCallsLeft] = useState(Infinity);
   const connectedAt = useRef(0);
   const endReason = useRef('');
-
-  // Same visitor + daily limit as the homepage live demo card
-  useEffect(() => {
-    setCallsLeft(callsLeftToday());
-    const saved = loadVisitor();
-    if (saved) {
-      setName(saved.name);
-      setPhone(saved.phone);
-    }
-  }, []);
 
   const startCall = useCallback(async (visitor) => {
     if (callsLeftToday() === 0) {
@@ -129,9 +122,25 @@ const LiveKitModal = ({ setShowSupport }) => {
     }
   }, []);
 
+  // Same visitor + daily limit as the homepage live demo card
+  useEffect(() => {
+    setCallsLeft(callsLeftToday());
+    const saved = initialVisitor || loadVisitor();
+    if (saved) {
+      setName(saved.name || '');
+      setPhone(saved.nationalPhone || saved.rawDigits || saved.phone || '');
+      if (saved.dialCode) {
+        setSelectedCountry(findCountryByCodeOrDial(saved.dialCode));
+      }
+      if (autoConnect && saved.name && saved.phone) {
+        startCall(saved);
+      }
+    }
+  }, [initialVisitor, autoConnect, startCall]);
+
   const handleNameSubmit = (event) => {
     event.preventDefault();
-    const { visitor, error } = validateVisitor(name, phone);
+    const { visitor, error } = validateVisitor(name, phone, selectedCountry.dialCode);
     if (error) {
       setErrorMsg(error);
       return;
@@ -204,7 +213,14 @@ const LiveKitModal = ({ setShowSupport }) => {
                 </div>
 
                 <div className="input-group modal-phone-group">
-                  <span className="modal-phone-prefix">🇮🇳 +91</span>
+                  <CountrySelect
+                    selectedCountry={selectedCountry}
+                    onSelect={(country) => {
+                      setSelectedCountry(country);
+                      setErrorMsg('');
+                    }}
+                    disabled={isLoading}
+                  />
                   <input
                     type="tel"
                     inputMode="numeric"
@@ -213,7 +229,7 @@ const LiveKitModal = ({ setShowSupport }) => {
                       setPhone(event.target.value);
                       setErrorMsg('');
                     }}
-                    placeholder="Mobile number"
+                    placeholder={selectedCountry.placeholder || 'Mobile number'}
                     required
                     autoComplete="tel-national"
                     disabled={isLoading}

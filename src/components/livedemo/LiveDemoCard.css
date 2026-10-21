@@ -284,7 +284,16 @@
   border: 1px solid var(--border-subtle);
   background: var(--black-inset);
   box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.8);
-  overflow: hidden;
+  position: relative;
+}
+
+.ld-phone .country-select-trigger {
+  border: none !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  border-right: 1px solid var(--border-subtle) !important;
+  border-radius: 12px 0 0 12px !important;
+  padding: 0 0.75rem 0 0.85rem !important;
 }
 
 .ld-phone:focus-within {

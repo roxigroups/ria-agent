@@ -85,17 +85,43 @@ export function saveVisitor(visitor) {
   logDemoLeadToSheet(visitor);
 }
 
-const cleanPhone = (value) => {
-  const digits = value.replace(/\D/g, '');
-  return digits.length === 12 && digits.startsWith('91') ? digits.slice(2) : digits;
-};
-
 // Returns { visitor } or { error } for the name + mobile form
-export function validateVisitor(name, phone) {
-  const visitor = { name: name.trim().slice(0, 60), phone: cleanPhone(phone) };
-  if (!visitor.name) return { error: 'Please enter your name.' };
-  if (!/^[6-9]\d{9}$/.test(visitor.phone)) return { error: 'Please enter a valid 10-digit mobile number.' };
-  return { visitor };
+export function validateVisitor(name, phone, dialCode = '+91') {
+  const trimmedName = (name || '').trim().slice(0, 60);
+  if (!trimmedName) return { error: 'Please enter your name.' };
+
+  const digits = (phone || '').replace(/\D/g, '');
+  if (!digits) return { error: 'Please enter your mobile number.' };
+
+  const cleanDial = dialCode && dialCode.startsWith('+') ? dialCode : '+91';
+
+  if (cleanDial === '+91') {
+    const indianDigits = digits.length === 12 && digits.startsWith('91') ? digits.slice(2) : digits;
+    if (!/^[6-9]\d{9}$/.test(indianDigits)) {
+      return { error: 'Please enter a valid 10-digit mobile number.' };
+    }
+    return {
+      visitor: {
+        name: trimmedName,
+        phone: `+91${indianDigits}`,
+        nationalPhone: indianDigits,
+        dialCode: '+91',
+      },
+    };
+  }
+
+  if (digits.length < 6 || digits.length > 15) {
+    return { error: 'Please enter a valid phone number (6–15 digits).' };
+  }
+
+  return {
+    visitor: {
+      name: trimmedName,
+      phone: `${cleanDial}${digits}`,
+      nationalPhone: digits,
+      dialCode: cleanDial,
+    },
+  };
 }
 
 // Fetches a LiveKit token carrying the visitor's name + phone (the agent greets

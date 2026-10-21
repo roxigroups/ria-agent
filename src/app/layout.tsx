@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from 'next';
 import './globals.css';
+import WhatsAppWidget from '@/components/WhatsAppWidget';
 
 export const metadata: Metadata = {
   title: 'RIA ai Agent',
@@ -29,6 +30,7 @@ export default function RootLayout({
     <html lang="en">
       <body suppressHydrationWarning>
         {children}
+        <WhatsAppWidget />
       </body>
     </html>
   );

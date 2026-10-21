@@ -18,7 +18,9 @@ import {
   X, 
   BarChart3, 
   Zap, 
-  Radio 
+  Radio,
+  Play,
+  ExternalLink
 } from 'lucide-react';
 import HeaderNav from '@/components/HeaderNav';
 import ParticleCanvas from '@/components/ParticleCanvas';
@@ -77,18 +79,18 @@ export default function ServicesPage() {
                   style={{
                     position: 'relative',
                     width: '100%',
-                    aspectRatio: '1024 / 682',
+                    aspectRatio: '1024 / 485',
                     borderRadius: '14px',
                     overflow: 'hidden',
                     border: '1px solid rgba(255, 255, 255, 0.22)',
-                    boxShadow: '0 14px 40px rgba(180, 40, 255, 0.16), 0 0 25px rgba(0, 0, 0, 0.95), inset 0 0 25px rgba(0, 0, 0, 0.7)',
+                    boxShadow: '0 14px 40px rgba(47, 123, 255, 0.16), 0 0 25px rgba(0, 0, 0, 0.95), inset 0 0 25px rgba(0, 0, 0, 0.7)',
                     cursor: 'zoom-in',
                     backgroundColor: '#07070a',
                   }}
                   title="Click to expand telemetry dashboard"
                 >
                   <Image
-                    src="/images/invoice-analytics-dashboard.png"
+                    src="/images/ria-telemetry-dashboard.jpg"
                     alt="Autonomous Invoice Operations & Real-Time Telemetry Dashboard"
                     fill
                     style={{ objectFit: 'cover' }}
@@ -167,7 +169,7 @@ export default function ServicesPage() {
                   </div>
 
                   <p style={{ fontSize: '0.86rem', color: 'var(--white-muted)', marginTop: '0.4rem', lineHeight: 1.55 }}>
-                    Unified real-time telemetry: Dynamic settlement rings, neural voice processing load, and multi-tier aging velocity.
+                    Unified real-time telemetry: Direct ledger attribution, call connectivity runs, and automated PTP recovery pipelines.
                   </p>
 
                   <div
@@ -179,21 +181,21 @@ export default function ServicesPage() {
                   >
                     <div className="skeuo-inset" style={{ flex: 1, padding: '0.75rem', textAlign: 'center' }}>
                       <div style={{ fontFamily: 'var(--font-mono)', fontWeight: 800, color: '#FFFFFF', fontSize: '1.15rem' }}>
-                        75%
+                        ₹3.04 L
                       </div>
-                      <div style={{ fontSize: '0.7rem', color: 'var(--white-muted)', marginTop: '0.2rem' }}>Auto-Resolved</div>
+                      <div style={{ fontSize: '0.7rem', color: 'var(--white-muted)', marginTop: '0.2rem' }}>Total Invoice</div>
                     </div>
                     <div className="skeuo-inset" style={{ flex: 1, padding: '0.75rem', textAlign: 'center' }}>
                       <div style={{ fontFamily: 'var(--font-mono)', fontWeight: 800, color: '#FFFFFF', fontSize: '1.15rem' }}>
-                        &lt;95ms
+                        81.3%
                       </div>
-                      <div style={{ fontSize: '0.7rem', color: 'var(--white-muted)', marginTop: '0.2rem' }}>Voice Latency</div>
+                      <div style={{ fontSize: '0.7rem', color: 'var(--white-muted)', marginTop: '0.2rem' }}>Call Connected</div>
                     </div>
                     <div className="skeuo-inset" style={{ flex: 1, padding: '0.75rem', textAlign: 'center' }}>
                       <div style={{ fontFamily: 'var(--font-mono)', fontWeight: 800, color: '#FFFFFF', fontSize: '1.15rem' }}>
-                        4.8x
+                        ₹0.90 L
                       </div>
-                      <div style={{ fontSize: '0.7rem', color: 'var(--white-muted)', marginTop: '0.2rem' }}>AR Velocity</div>
+                      <div style={{ fontSize: '0.7rem', color: 'var(--white-muted)', marginTop: '0.2rem' }}>Promised to Pay</div>
                     </div>
                   </div>
                 </div>
@@ -353,6 +355,166 @@ export default function ServicesPage() {
             </div>
           </div>
         </div>
+
+        {/* Section: Featured YouTube Video Showcase */}
+        <section
+          style={{
+            marginTop: 'clamp(3.5rem, 7vw, 6rem)',
+            width: '100%',
+          }}
+          aria-labelledby="video-showcase-title"
+        >
+          <div
+            className="skeuo-chassis"
+            style={{
+              padding: 'clamp(1.5rem, 3.5vw, 2.75rem)',
+              borderRadius: '24px',
+              position: 'relative',
+              background: 'linear-gradient(180deg, #141418 0%, #07070a 100%)',
+              border: '1px solid rgba(255, 255, 255, 0.18)',
+              boxShadow: '0 24px 60px rgba(0, 0, 0, 0.95), 0 0 35px rgba(47, 123, 255, 0.15)',
+            }}
+          >
+            {/* Top Screws */}
+            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1.25rem' }}>
+              <div className="skeuo-screw" />
+              <div className="skeuo-screw" />
+            </div>
+
+            {/* Header info */}
+            <div style={{ textAlign: 'center', maxWidth: '820px', margin: '0 auto 2.25rem' }}>
+              <div className="skeuo-badge" style={{ display: 'inline-flex', marginBottom: '1rem' }}>
+                <span className="green-led" />
+                <span>OFFICIAL BROADCAST // 4K VIDEO DEMONSTRATION</span>
+              </div>
+
+              <h2
+                id="video-showcase-title"
+                style={{
+                  fontSize: 'clamp(1.8rem, 4vw, 2.75rem)',
+                  fontWeight: 800,
+                  color: '#FFFFFF',
+                  letterSpacing: '-0.02em',
+                  lineHeight: 1.15,
+                  marginBottom: '0.85rem',
+                }}
+              >
+                Your Biggest Problem Isn&apos;t Sales.{' '}
+                <span
+                  style={{
+                    background: 'linear-gradient(135deg, #2F7BFF 0%, #A9C8FF 100%)',
+                    WebkitBackgroundClip: 'text',
+                    WebkitTextFillColor: 'transparent',
+                  }}
+                >
+                  It&apos;s Intelligence.
+                </span>
+              </h2>
+
+              <p style={{ color: 'var(--white-muted)', fontSize: '1.05rem', lineHeight: 1.6, margin: '0 auto' }}>
+                Watch how RIA AI re-architects distribution intelligence, converts outstanding ledger data into prioritized decisions, and transforms routine retailer conversations into measurable recovery.
+              </p>
+            </div>
+
+            {/* Video Player Frame with 16:9 Aspect Ratio */}
+            <div
+              style={{
+                position: 'relative',
+                width: '100%',
+                maxWidth: '1040px',
+                margin: '0 auto',
+                aspectRatio: '16 / 9',
+                borderRadius: '16px',
+                overflow: 'hidden',
+                border: '1px solid rgba(255, 255, 255, 0.22)',
+                boxShadow: '0 20px 50px rgba(0, 0, 0, 0.9), 0 0 30px rgba(47, 123, 255, 0.25)',
+                backgroundColor: '#000000',
+              }}
+            >
+              <iframe
+                src="https://www.youtube-nocookie.com/embed/9-fMLqcGAgA?rel=0&modestbranding=1"
+                title="Your Biggest Problem Isn't Sales. It's Intelligence. | RIA AI"
+                style={{
+                  position: 'absolute',
+                  top: 0,
+                  left: 0,
+                  width: '100%',
+                  height: '100%',
+                  border: 0,
+                }}
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowFullScreen
+              />
+            </div>
+
+            {/* Video Footer Metadata Strip */}
+            <div
+              style={{
+                maxWidth: '1040px',
+                margin: '1.75rem auto 0',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                flexWrap: 'wrap',
+                gap: '1rem',
+                paddingTop: '1.25rem',
+                borderTop: '1px solid rgba(255, 255, 255, 0.1)',
+                fontFamily: 'var(--font-mono)',
+                fontSize: '0.84rem',
+              }}
+            >
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
+                <span
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    width: '28px',
+                    height: '28px',
+                    borderRadius: '6px',
+                    background: '#FF0000',
+                    color: '#FFFFFF',
+                  }}
+                  aria-hidden="true"
+                >
+                  <Play size={14} fill="#FFFFFF" />
+                </span>
+                <span style={{ color: '#FFFFFF', fontWeight: 700 }}>
+                  RIA - AI Distribution Intelligence
+                </span>
+              </div>
+
+              <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', flexWrap: 'wrap' }}>
+                <span style={{ color: 'var(--white-muted)' }}>
+                  Platform Showcase · 4K UHD
+                </span>
+                <a
+                  href="https://www.youtube.com/@RIA-AIDistributionIntelligence"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{
+                    color: '#8DB8FF',
+                    textDecoration: 'none',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '0.35rem',
+                    fontWeight: 600,
+                    transition: 'color 0.2s ease',
+                  }}
+                >
+                  <span>Visit YouTube Channel</span>
+                  <ExternalLink size={14} />
+                </a>
+              </div>
+            </div>
+
+            {/* Bottom Screws */}
+            <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '1.25rem' }}>
+              <div className="skeuo-screw" />
+              <div className="skeuo-screw" />
+            </div>
+          </div>
+        </section>
 
         {/* Section: Telemetry Modules Breakdown (Matching Dashboard 01 - 09) */}
         <div style={{ marginTop: 'clamp(3.5rem, 8vw, 7rem)' }}>
@@ -562,7 +724,7 @@ export default function ServicesPage() {
               style={{
                 position: 'relative',
                 width: '100%',
-                aspectRatio: '1024 / 682',
+                aspectRatio: '1024 / 485',
                 borderRadius: '14px',
                 overflow: 'hidden',
                 border: '1px solid rgba(255, 255, 255, 0.25)',
@@ -570,7 +732,7 @@ export default function ServicesPage() {
               }}
             >
               <Image
-                src="/images/invoice-analytics-dashboard.png"
+                src="/images/ria-telemetry-dashboard.jpg"
                 alt="Full resolution Enterprise Invoice Analytics Dashboard"
                 fill
                 style={{ objectFit: 'contain' }}

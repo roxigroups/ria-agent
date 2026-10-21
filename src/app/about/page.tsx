@@ -2,6 +2,7 @@
 
 import React, { useEffect, useRef } from 'react';
 import Link from 'next/link';
+import { ArrowUpRight } from 'lucide-react';
 import HeaderNav from '@/components/HeaderNav';
 import ParticleCanvas from '@/components/ParticleCanvas';
 import Footer from '@/components/Footer';
@@ -806,8 +807,8 @@ export default function AboutPage() {
                       <span>Roxy Group legacy</span>
                     </div>
                     <div className="skeuo-inset stat">
-                      <b>3</b>
-                      <span>Telugu · Hindi · English</span>
+                      <b>29</b>
+                      <span>Languages</span>
                     </div>
                     <div className="skeuo-inset stat">
                       <b>G1–G6</b>
@@ -1042,15 +1043,58 @@ export default function AboutPage() {
             Each agent handles one job well and shares the same identity, compliance gate and audit trail. Status is shown plainly: what runs today, and what is rolling out in phases.
           </p>
           <div className="grid-3">
-            <div className="skeuo-inset card">
-              <div className="card-head" style={{ justifyContent: 'space-between' }}>
-                <h3>Collection Agent</h3>
-                <span className="tag live">LIVE</span>
+            <a
+              href="https://riaaiagent.cc/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="skeuo-inset card"
+              style={{
+                textDecoration: 'none',
+                color: 'inherit',
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'space-between',
+                cursor: 'pointer',
+                transition: 'all 0.22s ease',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = 'translateY(-3px)';
+                e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.45)';
+                e.currentTarget.style.boxShadow = '0 10px 25px rgba(0, 0, 0, 0.8), 0 0 16px rgba(255, 255, 255, 0.15)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = 'translateY(0)';
+                e.currentTarget.style.borderColor = '';
+                e.currentTarget.style.boxShadow = '';
+              }}
+            >
+              <div>
+                <div className="card-head" style={{ justifyContent: 'space-between' }}>
+                  <h3>Collection Agent</h3>
+                  <span className="tag live">LIVE</span>
+                </div>
+                <p>
+                  Calls retailers on outstanding dues, reconciles before stating any amount, records promises to pay and escalates disputes to a person.
+                </p>
               </div>
-              <p>
-                Calls retailers on outstanding dues, reconciles before stating any amount, records promises to pay and escalates disputes to a person.
-              </p>
-            </div>
+
+              <div
+                className="btn-skeuo-primary"
+                style={{
+                  marginTop: '1.25rem',
+                  padding: '0.65rem 1rem',
+                  fontSize: '0.84rem',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: '0.45rem',
+                  width: '100%',
+                }}
+              >
+                <span>Launch Collection Agent</span>
+                <ArrowUpRight size={15} />
+              </div>
+            </a>
             <div className="skeuo-inset card">
               <div className="card-head" style={{ justifyContent: 'space-between' }}>
                 <h3>Marketing Agent</h3>

@@ -1,12 +1,15 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import HeaderNav from '@/components/HeaderNav';
 import ParticleCanvas from '@/components/ParticleCanvas';
 import TiltCard from '@/components/TiltCard';
 import Footer from '@/components/Footer';
+import CountrySelect from '@/components/calling/CountrySelect';
+import { COUNTRIES, DEFAULT_COUNTRY, Country } from '@/data/countries';
+import { loadVisitor, saveVisitor, validateVisitor } from '@/components/calling/demoSession';
 import '@/components/calling/calling.css';
 import {
   PhoneCall,
@@ -34,8 +37,44 @@ const LiveKitModal = dynamic(() => import('@/components/calling/LiveKitModal'), 
 
 export default function DemoPage() {
   const [showSupport, setShowSupport] = useState(false);
+  const [initialVisitor, setInitialVisitor] = useState<any>(null);
+  const [autoConnect, setAutoConnect] = useState(false);
+
+  // Interactive cockpit phone dialer
+  const [cockpitName, setCockpitName] = useState('');
+  const [cockpitPhone, setCockpitPhone] = useState('');
+  const [cockpitCountry, setCockpitCountry] = useState<Country>(DEFAULT_COUNTRY);
+  const [cockpitError, setCockpitError] = useState('');
+
+  useEffect(() => {
+    const saved = loadVisitor();
+    if (saved) {
+      setCockpitName(saved.name || '');
+      setCockpitPhone(saved.nationalPhone || saved.rawDigits || saved.phone || '');
+      if (saved.dialCode) {
+        const c = COUNTRIES.find((x) => x.dialCode === saved.dialCode);
+        if (c) setCockpitCountry(c);
+      }
+    }
+  }, []);
 
   const handleSupportClick = () => {
+    setInitialVisitor(null);
+    setAutoConnect(false);
+    setShowSupport(true);
+  };
+
+  const handleCockpitSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    const { visitor, error } = validateVisitor(cockpitName, cockpitPhone, cockpitCountry.dialCode);
+    if (error) {
+      setCockpitError(error);
+      return;
+    }
+    setCockpitError('');
+    saveVisitor(visitor);
+    setInitialVisitor(visitor);
+    setAutoConnect(true);
     setShowSupport(true);
   };
 
@@ -137,22 +176,6 @@ export default function DemoPage() {
               <PhoneCall size={22} color="#000000" />
               <span>Talk to RIA (Start Live Call)</span>
             </button>
-
-            <div
-              style={{
-                fontFamily: 'var(--font-mono)',
-                fontSize: '0.84rem',
-                color: 'var(--white-muted)',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '0.5rem',
-                flexWrap: 'wrap',
-                justifyContent: 'center',
-              }}
-            >
-              <Languages size={15} color="#FFFFFF" />
-              <span>Speaks natural Telugu-English (Tanglish), Hindi &amp; English • Sub-95ms LiveKit WebRTC</span>
-            </div>
           </div>
         </div>
 
@@ -242,19 +265,139 @@ export default function DemoPage() {
                   Direct Voice Dispatch Terminal
                 </h3>
 
-                <p style={{ fontSize: '0.92rem', color: 'var(--white-muted)', maxWidth: '560px', lineHeight: 1.6 }}>
-                  Click below to launch an encrypted sub-95ms WebRTC voice session directly with RIA.
-                  Experience real-time speech synthesis, natural interruptions, and multilingual commitment tracking.
+                <p style={{ fontSize: '0.92rem', color: 'var(--white-muted)', maxWidth: '580px', lineHeight: 1.6 }}>
+                  Select your country code from 28 global regions to test RIA live. Real-time sub-95ms WebRTC voice session with instant response and multilingual commitment tracking.
                 </p>
 
-                <button
-                  onClick={handleSupportClick}
-                  className="btn-skeuo-primary"
-                  style={{ marginTop: '0.5rem' }}
+                {/* Direct Cockpit Dialer with 28-Country Selection */}
+                <form
+                  onSubmit={handleCockpitSubmit}
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: '0.9rem',
+                    width: '100%',
+                    maxWidth: '480px',
+                    marginTop: '0.25rem',
+                  }}
                 >
-                  <Radio size={18} color="#000000" />
-                  <span>Launch Live Voice Session</span>
-                </button>
+                  {cockpitError && (
+                    <div
+                      style={{
+                        background: 'rgba(239, 68, 68, 0.15)',
+                        border: '1px solid rgba(239, 68, 68, 0.4)',
+                        color: '#fca5a5',
+                        padding: '0.65rem 1rem',
+                        borderRadius: '12px',
+                        fontSize: '0.85rem',
+                        fontFamily: 'var(--font-mono, monospace)',
+                        textAlign: 'left',
+                      }}
+                    >
+                      ⚠️ {cockpitError}
+                    </div>
+                  )}
+
+                  <input
+                    type="text"
+                    value={cockpitName}
+                    onChange={(e) => {
+                      setCockpitName(e.target.value);
+                      setCockpitError('');
+                    }}
+                    placeholder="Enter your name..."
+                    required
+                    style={{
+                      width: '100%',
+                      padding: '0.95rem 1.25rem',
+                      borderRadius: '14px',
+                      background: 'linear-gradient(180deg, #09090b 0%, #121216 100%)',
+                      border: '1px solid rgba(255, 255, 255, 0.22)',
+                      color: '#FFFFFF',
+                      fontFamily: 'var(--font-mono, monospace)',
+                      fontSize: '0.95rem',
+                      outline: 'none',
+                      boxShadow: 'inset 0 3px 6px rgba(0, 0, 0, 0.9), 0 1px 0 rgba(255, 255, 255, 0.15)',
+                    }}
+                  />
+
+                  <div
+                    style={{
+                      display: 'flex',
+                      alignItems: 'stretch',
+                      gap: '0.6rem',
+                      width: '100%',
+                      position: 'relative',
+                    }}
+                  >
+                    <CountrySelect
+                      selectedCountry={cockpitCountry}
+                      onSelect={(country) => {
+                        setCockpitCountry(country);
+                        setCockpitError('');
+                      }}
+                    />
+                    <input
+                      type="tel"
+                      inputMode="numeric"
+                      value={cockpitPhone}
+                      onChange={(e) => {
+                        setCockpitPhone(e.target.value);
+                        setCockpitError('');
+                      }}
+                      placeholder={cockpitCountry.placeholder || 'Mobile number'}
+                      required
+                      style={{
+                        flex: 1,
+                        minWidth: 0,
+                        padding: '0.95rem 1.25rem',
+                        borderRadius: '14px',
+                        background: 'linear-gradient(180deg, #09090b 0%, #121216 100%)',
+                        border: '1px solid rgba(255, 255, 255, 0.22)',
+                        color: '#FFFFFF',
+                        fontFamily: 'var(--font-mono, monospace)',
+                        fontSize: '0.95rem',
+                        outline: 'none',
+                        boxShadow: 'inset 0 3px 6px rgba(0, 0, 0, 0.9), 0 1px 0 rgba(255, 255, 255, 0.15)',
+                      }}
+                    />
+                  </div>
+
+                  <button
+                    type="submit"
+                    className="btn-skeuo-primary"
+                    style={{
+                      width: '100%',
+                      padding: '1rem',
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      gap: '0.75rem',
+                      fontSize: '1.02rem',
+                      marginTop: '0.25rem',
+                    }}
+                  >
+                    <Radio size={18} color="#000000" />
+                    <span>Launch Live Voice Session</span>
+                  </button>
+                </form>
+
+                <div
+                  style={{
+                    fontFamily: 'var(--font-mono, monospace)',
+                    fontSize: '0.78rem',
+                    color: 'var(--white-muted, #A3A3A3)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '0.5rem',
+                    flexWrap: 'wrap',
+                    justifyContent: 'center',
+                  }}
+                >
+                  <span>Selected: {cockpitCountry.flag} {cockpitCountry.name} ({cockpitCountry.dialCode})</span>
+                  <span>•</span>
+                  <span>28 Countries Available</span>
+                </div>
               </div>
 
               {/* Bottom Screws */}
@@ -471,7 +614,13 @@ export default function DemoPage() {
       </button>
 
       {/* LiveKit Calling Modal */}
-      {showSupport && <LiveKitModal setShowSupport={setShowSupport} />}
+      {showSupport && (
+        <LiveKitModal
+          setShowSupport={setShowSupport}
+          initialVisitor={initialVisitor}
+          autoConnect={autoConnect}
+        />
+      )}
     </main>
   );
 }
