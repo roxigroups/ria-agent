@@ -2,9 +2,16 @@
 
 import { useState, useCallback, useEffect, useRef, Component } from 'react';
 import { LiveKitRoom, RoomAudioRenderer } from '@livekit/components-react';
-import '@livekit/components-styles';
-import SimpleVoiceAssistant from './SimpleVoiceAssistant';
-import { CloseIcon } from './Icons';
+import { LiveCall } from '@/components/livedemo/LiveDemoCard';
+import '@/components/livedemo/LiveDemoCard.css';
+import {
+  CloseIcon,
+  AlertCircleIcon,
+  AlertTriangleIcon,
+  RadioWaveIcon,
+  PhoneCallIcon,
+  LanguagesIcon,
+} from './Icons';
 import CountrySelect from './CountrySelect';
 import { DEFAULT_COUNTRY, findCountryByCodeOrDial } from '@/data/countries';
 import {
@@ -48,9 +55,11 @@ class LiveKitErrorBoundary extends Component {
             background: '#ffffff',
           }}
         >
-          <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>⚠️</div>
+          <div style={{ marginBottom: '1rem' }}>
+            <AlertTriangleIcon size={42} color="#ef4444" />
+          </div>
           <h3 style={{ color: '#0f172a', marginBottom: '0.5rem' }}>
-            Something went wrong in the voice session
+            Voice Session Stream Interrupted
           </h3>
           <p
             style={{
@@ -70,7 +79,7 @@ class LiveKitErrorBoundary extends Component {
             }}
             style={{
               padding: '0.75rem 1.5rem',
-              background: '#4f46e5',
+              background: '#0f172a',
               color: '#ffffff',
               border: 'none',
               borderRadius: '8px',
@@ -78,7 +87,7 @@ class LiveKitErrorBoundary extends Component {
               cursor: 'pointer',
             }}
           >
-            Try Again
+            Reconnect Terminal
           </button>
         </div>
       );
@@ -102,7 +111,7 @@ const LiveKitModal = ({ setShowSupport, initialVisitor = null, autoConnect = fal
   const startCall = useCallback(async (visitor) => {
     if (callsLeftToday() === 0) {
       setCallsLeft(0);
-      setErrorMsg("You've used all free calls today. Resets at midnight IST.");
+      setErrorMsg("Daily test session limit reached. Resets at midnight IST.");
       return;
     }
     try {
@@ -178,21 +187,29 @@ const LiveKitModal = ({ setShowSupport, initialVisitor = null, autoConnect = fal
         <div className="support-room">
           {isSubmittingName ? (
             <div className="modal-form-container">
-              <div className="modal-robot-badge">
-                <div className="robot-badge-icon">🤖</div>
-                <div className="robot-badge-pulse" />
+              <div className="modal-telecom-badge">
+                <div className="telecom-badge-chassis">
+                  <RadioWaveIcon size={22} className="telecom-badge-icon" />
+                  <span className="telecom-live-indicator" />
+                </div>
+                <div className="telecom-badge-meta">
+                  <span className="telecom-protocol">WEBRTC VOICE STREAM</span>
+                  <span className="telecom-channel">CH-01 // LOW LATENCY</span>
+                </div>
               </div>
 
               <form onSubmit={handleNameSubmit} className="name-form" noValidate>
-                <h2>Talk to RIA — AI Voice Demo</h2>
+                <h2>Direct Voice Terminal</h2>
                 <p className="form-subtext">
-                  Experience RIA live in any language — Telugu, Hindi, Tamil, English and more. RIA greets you by name and
-                  our team follows up on your number.
-                  {DAILY_LIMIT > 0 && ` ${callsLeft} free ${callsLeft === 1 ? 'call' : 'calls'} left today.`}
+                  Experience real-time interactive recovery calls in Telugu, Hindi, Tamil, English, and 25+ global dialects. Sub-95ms conversational response with automated payment tracking.
+                  {DAILY_LIMIT > 0 && ` ${callsLeft} free ${callsLeft === 1 ? 'session' : 'sessions'} available today.`}
                 </p>
 
                 {errorMsg && (
-                  <div className="modal-error-banner">⚠️ {errorMsg}</div>
+                  <div className="modal-error-banner">
+                    <AlertCircleIcon size={16} />
+                    <span>{errorMsg}</span>
+                  </div>
                 )}
 
                 <div className="input-group">
@@ -244,9 +261,12 @@ const LiveKitModal = ({ setShowSupport, initialVisitor = null, autoConnect = fal
                     disabled={isLoading || callsLeft === 0}
                   >
                     {isLoading ? (
-                      <span className="btn-spinner-text">Connecting...</span>
+                      <span className="btn-spinner-text">Connecting Audio Channel...</span>
                     ) : (
-                      <span>🎙️ Start Live Call</span>
+                      <>
+                        <PhoneCallIcon size={18} />
+                        <span>Initialize Voice Session</span>
+                      </>
                     )}
                   </button>
 
@@ -261,8 +281,9 @@ const LiveKitModal = ({ setShowSupport, initialVisitor = null, autoConnect = fal
                 </div>
 
                 <div className="modal-form-footer">
+                  <LanguagesIcon size={14} />
                   <span>
-                    ⚡ Speaks Telugu, Hindi &amp; English — calls capped at 5 minutes
+                    29 Languages Supported · Opus 48kHz HD Audio · 5m Session Cap
                   </span>
                 </div>
               </form>
@@ -273,6 +294,7 @@ const LiveKitModal = ({ setShowSupport, initialVisitor = null, autoConnect = fal
                 setToken(null);
                 setIsSubmittingName(true);
               }}
+
             >
               <LiveKitRoom
                 className="livekit-room-wrapper"
@@ -281,12 +303,13 @@ const LiveKitModal = ({ setShowSupport, initialVisitor = null, autoConnect = fal
                 connect={true}
                 video={false}
                 audio={MIC_OPTIONS}
-                options={{ audioCaptureDefaults: MIC_OPTIONS }}
                 onDisconnected={() => endCall()}
                 {...roomErrorHandlers(connectedAt, endCall)}
               >
                 <RoomAudioRenderer />
-                <SimpleVoiceAssistant visitorName={name} onDisconnect={endCall} />
+                <div className="ld-modal-live-wrapper">
+                  <LiveCall visitorName={name} onEnd={endCall} />
+                </div>
               </LiveKitRoom>
             </LiveKitErrorBoundary>
           ) : null}

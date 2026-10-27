@@ -133,37 +133,12 @@ export default function ContactPage() {
             glareOpacity={0.15}
             style={{ width: '100%' }}
           >
-            {/* Index Tab on Top of Box */}
-            <div
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '0.5rem',
-                padding: '0.45rem 1.2rem',
-                backgroundColor: '#FFFFFF',
-                color: '#000000',
-                fontFamily: 'var(--font-mono)',
-                fontSize: 'clamp(0.7rem, 1.8vw, 0.78rem)',
-                fontWeight: 800,
-                letterSpacing: '0.06em',
-                textTransform: 'uppercase',
-                borderTopLeftRadius: '12px',
-                borderTopRightRadius: '12px',
-                borderBottom: 'none',
-                boxShadow: '0 -4px 12px rgba(255, 255, 255, 0.1)',
-                marginLeft: 'clamp(0.5rem, 2vw, 1.5rem)',
-              }}
-            >
-              <span>INDEX NO. 412 // DISPATCH INQUIRY</span>
-            </div>
-
-            {/* The Main White Index Box */}
+            {/* The Main White Box */}
             <div
               style={{
                 backgroundColor: '#FFFFFF',
                 color: '#111111',
                 borderRadius: '20px',
-                borderTopLeftRadius: '0px',
                 padding: 'clamp(1.25rem, 4vw, 2.5rem)',
                 boxShadow: '0 25px 60px rgba(0, 0, 0, 0.95), 0 0 30px rgba(255, 255, 255, 0.12)',
                 border: '1px solid #E5E5E5',

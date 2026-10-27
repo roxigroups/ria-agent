@@ -47,11 +47,20 @@ export default function ParticleCanvas() {
     window.addEventListener('mousemove', handleMouseMove);
 
     // Monochromatic particles
-    const colors = [
+    // Monochromatic particles (idle) and vibrant harmonic particles (speaking)
+    const defaultColors = [
       'rgba(255, 255, 255, 0.95)',
       'rgba(230, 230, 230, 0.75)',
       'rgba(180, 180, 180, 0.55)',
       'rgba(255, 255, 255, 0.85)',
+    ];
+
+    const speakingColors = [
+      'rgba(103, 232, 249, 0.95)', // electric cyan
+      'rgba(244, 114, 182, 0.95)', // neon magenta
+      'rgba(129, 140, 248, 0.95)', // cosmic violet
+      'rgba(56, 189, 248, 0.9)',   // sky cyan
+      'rgba(255, 255, 255, 0.95)', // crisp star white
     ];
 
     const particleCount = 75;
@@ -67,12 +76,14 @@ export default function ParticleCanvas() {
         baseY: y,
         z: Math.random() * 2 + 0.5,
         radius: Math.random() * 2 + 1,
-        color: colors[Math.floor(Math.random() * colors.length)],
+        color: defaultColors[Math.floor(Math.random() * defaultColors.length)],
         speed: (Math.random() * 0.4 + 0.1) * (Math.random() > 0.5 ? 1 : -1),
       });
     }
 
     const render = () => {
+      const isSpeaking = typeof document !== 'undefined' && document.body.classList.contains('ria-agent-speaking');
+
       mouseX += (targetMouseX - mouseX) * 0.05;
       mouseY += (targetMouseY - mouseY) * 0.05;
 
@@ -83,7 +94,7 @@ export default function ParticleCanvas() {
 
       for (let i = 0; i < particles.length; i++) {
         const p = particles[i];
-        p.baseY += p.speed;
+        p.baseY += isSpeaking ? p.speed * 1.6 : p.speed;
 
         if (p.baseY < 0) p.baseY = height;
         if (p.baseY > height) p.baseY = 0;
@@ -91,11 +102,13 @@ export default function ParticleCanvas() {
         const drawX = p.baseX + offsetX * p.z;
         const drawY = p.baseY + offsetY * p.z;
 
+        const particleColor = isSpeaking ? speakingColors[i % speakingColors.length] : p.color;
+
         ctx.beginPath();
         ctx.arc(drawX, drawY, p.radius * p.z, 0, Math.PI * 2);
-        ctx.fillStyle = p.color;
-        ctx.shadowBlur = p.radius * 6;
-        ctx.shadowColor = p.color;
+        ctx.fillStyle = particleColor;
+        ctx.shadowBlur = isSpeaking ? p.radius * 12 : p.radius * 6;
+        ctx.shadowColor = particleColor;
         ctx.fill();
         ctx.shadowBlur = 0;
       }

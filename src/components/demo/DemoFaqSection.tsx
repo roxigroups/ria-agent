@@ -10,7 +10,6 @@ import {
   Search,
   ChevronDown,
   CheckCircle2,
-  Sparkles,
   ShieldCheck,
   Zap,
   ArrowRight,

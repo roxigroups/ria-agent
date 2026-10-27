@@ -20,6 +20,8 @@ import {
   CloseIcon,
   CopyIcon,
   CheckIcon,
+  PhoneCallIcon,
+  UserAvatarIcon,
 } from './Icons';
 import { formatDuration, useCallGuards, useHangUp } from './demoSession';
 import './SimpleVoiceAssistant.css';
@@ -201,16 +203,22 @@ const SimpleVoiceAssistant = ({ visitorName, onDisconnect }) => {
           <div className="drawer-body">
             {messages.length === 0 ? (
               <div className="empty-transcript">
-                <div className="empty-icon">💬</div>
-                <p className="empty-headline">No messages yet</p>
-                <p className="empty-sub">Speak in Telugu, Hindi or English — RIA follows you.</p>
+                <div className="empty-icon">
+                  <ChatIcon size={32} />
+                </div>
+                <p className="empty-headline">No messages recorded</p>
+                <p className="empty-sub">Speak in Telugu, Hindi, Tamil or English — live transcription appears here.</p>
               </div>
             ) : (
               <div className="chat-messages-list">
                 {messages.map((msg, idx) => (
                   <div key={msg.id || idx} className={`chat-bubble-row ${msg.type}`}>
                     <div className="bubble-sender-avatar">
-                      {msg.type === 'agent' ? '🤖' : '👤'}
+                      {msg.type === 'agent' ? (
+                        <PhoneCallIcon size={13} />
+                      ) : (
+                        <UserAvatarIcon size={13} />
+                      )}
                     </div>
                     <div className="bubble-content-box">
                       <div className="bubble-meta">
@@ -281,9 +289,6 @@ const SimpleVoiceAssistant = ({ visitorName, onDisconnect }) => {
               {isSpeakerMuted ? 'Audio Muted' : 'Audio On'}
             </span>
           </button>
-
-          {/* Dock Divider */}
-          <div className="dock-divider" />
 
           {/* 4. End Call / Disconnect Button */}
           <button

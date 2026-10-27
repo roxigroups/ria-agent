@@ -17,6 +17,22 @@
   -webkit-backdrop-filter: blur(14px);
   color: var(--white-pure);
   overflow: hidden;
+  transition: border-color 0.4s ease, box-shadow 0.4s ease;
+}
+
+.ld-card.is-live-card {
+  box-shadow:
+    0 24px 60px rgba(0, 0, 0, 0.75),
+    0 0 50px rgba(6, 182, 212, 0.22),
+    0 0 100px rgba(168, 85, 247, 0.16),
+    inset 0 1px 0 rgba(255, 255, 255, 0.18),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.6);
+  border-color: rgba(6, 182, 212, 0.45);
+}
+
+body.ria-agent-speaking .ld-card.is-live-card {
+  border-color: rgba(6, 182, 212, 0.85);
+  animation: ldCardSpeakingGlow 1.8s ease-in-out infinite alternate;
 }
 
 .ld-card-head,
@@ -151,17 +167,372 @@
   animation: ld-spin 0.9s linear infinite;
 }
 
-.ld-orb-live {
-  transition: transform 0.25s ease;
+/* ---- 3D Stage & Vibrant Speaking Waves ---- */
+.ld-stage-3d {
+  position: relative;
+  width: 170px;
+  height: 170px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 0.85rem;
+  perspective: 800px;
+  perspective-origin: center center;
 }
 
+.ld-stage-3d .ld-orb {
+  margin-bottom: 0;
+  z-index: 5;
+}
+
+.ld-wave-emitter {
+  position: absolute;
+  inset: -15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  transform-style: preserve-3d;
+  z-index: 1;
+}
+
+.ld-wave-ring {
+  position: absolute;
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.ld-wave-aura {
+  position: absolute;
+  bottom: 0px;
+  width: 150px;
+  height: 44px;
+  border-radius: 50%;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+/* When Speaking: Vibrant 3D Harmonic Wave Propagation */
+.ld-wave-emitter.is-speaking .ld-wave-1 {
+  border: 2px solid rgba(6, 182, 212, 0.9);
+  box-shadow: 0 0 24px rgba(6, 182, 212, 0.65), inset 0 0 14px rgba(168, 85, 247, 0.45);
+  animation: ldWavePulse3D1 2.2s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+}
+
+.ld-wave-emitter.is-speaking .ld-wave-2 {
+  border: 2px solid rgba(217, 70, 239, 0.9);
+  box-shadow: 0 0 28px rgba(217, 70, 239, 0.65), inset 0 0 14px rgba(236, 72, 153, 0.45);
+  animation: ldWavePulse3D2 2.2s cubic-bezier(0.16, 1, 0.3, 1) 0.7s infinite;
+}
+
+.ld-wave-emitter.is-speaking .ld-wave-3 {
+  border: 2px solid rgba(99, 102, 241, 0.9);
+  box-shadow: 0 0 32px rgba(99, 102, 241, 0.7), inset 0 0 16px rgba(59, 130, 246, 0.5);
+  animation: ldWavePulse3D3 2.2s cubic-bezier(0.16, 1, 0.3, 1) 1.4s infinite;
+}
+
+.ld-wave-emitter.is-speaking .ld-wave-aura {
+  opacity: 0.85;
+  background: radial-gradient(ellipse at center, rgba(168, 85, 247, 0.5) 0%, rgba(59, 130, 246, 0.35) 45%, rgba(6, 182, 212, 0) 72%);
+  transform: rotateX(68deg);
+  animation: ldAuraPulse 1.8s ease-in-out infinite alternate;
+}
+
+/* Center Stage 3D Orbiting Ring */
+.ld-orbital-ring-center {
+  position: absolute;
+  width: 175px;
+  height: 175px;
+  border-radius: 50%;
+  opacity: 0;
+  pointer-events: none;
+  border: 1.5px solid rgba(6, 182, 212, 0.85);
+  box-shadow: 0 0 20px rgba(6, 182, 212, 0.6), inset 0 0 10px rgba(217, 70, 239, 0.45);
+  transition: opacity 0.3s ease;
+}
+
+.ld-wave-emitter.is-speaking .ld-orbital-ring-center {
+  opacity: 0.9;
+  animation: ldCenterOrbit 4.5s linear infinite;
+}
+
+/* ---- Total Screen Ambient Atmospheric Effects ---- */
+.ld-screen-ambient-field {
+  position: absolute;
+  inset: -140px;
+  width: calc(100% + 280px);
+  height: calc(100% + 280px);
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform-style: preserve-3d;
+}
+
+/* Full-Screen Dynamic Auroras */
+.ld-screen-aurora {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  opacity: 0;
+  filter: blur(65px);
+  transition: opacity 0.6s ease;
+}
+
+.ld-aurora-1 {
+  width: 320px;
+  height: 320px;
+  top: -15%;
+  left: -15%;
+}
+
+.ld-aurora-2 {
+  width: 360px;
+  height: 360px;
+  bottom: -20%;
+  right: -15%;
+}
+
+.ld-aurora-3 {
+  width: 300px;
+  height: 300px;
+  top: 25%;
+  left: 25%;
+}
+
+.ld-screen-ambient-field.is-speaking .ld-aurora-1 {
+  opacity: 0.65;
+  background: radial-gradient(circle, rgba(6, 182, 212, 0.45) 0%, rgba(99, 102, 241, 0.25) 55%, transparent 75%);
+  animation: ldScreenAuroraRotate1 10s linear infinite;
+}
+
+.ld-screen-ambient-field.is-speaking .ld-aurora-2 {
+  opacity: 0.55;
+  background: radial-gradient(circle, rgba(217, 70, 239, 0.42) 0%, rgba(236, 72, 153, 0.2) 55%, transparent 75%);
+  animation: ldScreenAuroraRotate2 12s linear infinite;
+}
+
+.ld-screen-ambient-field.is-speaking .ld-aurora-3 {
+  opacity: 0.5;
+  background: radial-gradient(circle, rgba(99, 102, 241, 0.5) 0%, rgba(6, 182, 212, 0.2) 55%, transparent 75%);
+  animation: ldScreenAuroraBreathe 3.5s ease-in-out infinite alternate;
+}
+
+/* Screen Expanding Acoustic Shockwave Ripples */
+.ld-screen-ripple-ring {
+  position: absolute;
+  width: 170px;
+  height: 170px;
+  border-radius: 50%;
+  opacity: 0;
+  pointer-events: none;
+  transform: scale(0.65);
+}
+
+.ld-screen-ambient-field.is-speaking .ripple-screen-1 {
+  border: 1.5px solid rgba(6, 182, 212, 0.75);
+  box-shadow: 0 0 35px rgba(6, 182, 212, 0.5), inset 0 0 20px rgba(168, 85, 247, 0.35);
+  animation: ldScreenRipple 3.6s cubic-bezier(0.12, 0.8, 0.32, 1) infinite;
+}
+
+.ld-screen-ambient-field.is-speaking .ripple-screen-2 {
+  border: 1.5px solid rgba(217, 70, 239, 0.7);
+  box-shadow: 0 0 38px rgba(217, 70, 239, 0.45), inset 0 0 20px rgba(236, 72, 153, 0.3);
+  animation: ldScreenRipple 3.6s cubic-bezier(0.12, 0.8, 0.32, 1) 0.9s infinite;
+}
+
+.ld-screen-ambient-field.is-speaking .ripple-screen-3 {
+  border: 1.5px solid rgba(99, 102, 241, 0.75);
+  box-shadow: 0 0 42px rgba(99, 102, 241, 0.5), inset 0 0 20px rgba(59, 130, 246, 0.35);
+  animation: ldScreenRipple 3.6s cubic-bezier(0.12, 0.8, 0.32, 1) 1.8s infinite;
+}
+
+.ld-screen-ambient-field.is-speaking .ripple-screen-4 {
+  border: 1.5px solid rgba(34, 211, 238, 0.7);
+  box-shadow: 0 0 45px rgba(34, 211, 238, 0.45), inset 0 0 20px rgba(217, 70, 239, 0.3);
+  animation: ldScreenRipple 3.6s cubic-bezier(0.12, 0.8, 0.32, 1) 2.7s infinite;
+}
+
+/* 3D Cosmic Gyroscope / Orbital Wave Rings */
+.ld-screen-orbital-rig {
+  position: absolute;
+  width: 320px;
+  height: 320px;
+  transform-style: preserve-3d;
+  perspective: 1000px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+.ld-screen-ambient-field.is-speaking .ld-screen-orbital-rig {
+  opacity: 0.85;
+}
+
+.ld-screen-ambient-field.is-listening .ld-screen-orbital-rig {
+  opacity: 0.35;
+}
+
+.ld-orbital-ring {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.ld-orbital-ring.ring-lat {
+  width: 300px;
+  height: 300px;
+  border: 1.5px dashed rgba(6, 182, 212, 0.55);
+  box-shadow: 0 0 15px rgba(6, 182, 212, 0.35);
+  animation: ldOrbitSpinLat 9s linear infinite;
+}
+
+.ld-orbital-ring.ring-long {
+  width: 280px;
+  height: 280px;
+  border: 1.5px solid rgba(217, 70, 239, 0.5);
+  box-shadow: 0 0 18px rgba(217, 70, 239, 0.35);
+  animation: ldOrbitSpinLong 11s linear infinite reverse;
+}
+
+.ld-orbital-ring.ring-diag {
+  width: 330px;
+  height: 330px;
+  border: 1px dotted rgba(99, 102, 241, 0.6);
+  box-shadow: 0 0 20px rgba(99, 102, 241, 0.4);
+  animation: ldOrbitSpinDiag 14s linear infinite;
+}
+
+/* 3D Sound Horizon Equalizer / Spatial Grid */
+.ld-screen-sound-horizon {
+  position: absolute;
+  bottom: -30px;
+  width: 100%;
+  height: 180px;
+  pointer-events: none;
+  transform: perspective(350px) rotateX(75deg);
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+.ld-screen-ambient-field.is-speaking .ld-screen-sound-horizon {
+  opacity: 0.65;
+  background: 
+    linear-gradient(180deg, rgba(6, 182, 212, 0) 0%, rgba(99, 102, 241, 0.25) 50%, rgba(217, 70, 239, 0.35) 100%),
+    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.08) 0px, rgba(255, 255, 255, 0.08) 1px, transparent 1px, transparent 24px);
+  animation: ldHorizonScroll 3s linear infinite;
+}
+
+/* Floating Luminous Stardust Sparkles */
+.ld-sparkle {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  opacity: 0;
+  pointer-events: none;
+  background: #ffffff;
+}
+
+.ld-screen-ambient-field.is-speaking .ld-sparkle {
+  opacity: 0.9;
+}
+
+.ld-sparkle.sp-1 {
+  top: 15%;
+  left: 18%;
+  background: #67e8f9;
+  box-shadow: 0 0 12px #22d3ee;
+  animation: ldSparkleFloat 3.8s ease-in-out infinite;
+}
+
+.ld-sparkle.sp-2 {
+  top: 22%;
+  right: 15%;
+  background: #f472b6;
+  box-shadow: 0 0 12px #ec4899;
+  animation: ldSparkleFloat 4.2s ease-in-out 0.6s infinite;
+}
+
+.ld-sparkle.sp-3 {
+  bottom: 25%;
+  left: 12%;
+  background: #a78bfa;
+  box-shadow: 0 0 12px #8b5cf6;
+  animation: ldSparkleFloat 3.4s ease-in-out 1.2s infinite;
+}
+
+.ld-sparkle.sp-4 {
+  bottom: 20%;
+  right: 20%;
+  background: #38bdf8;
+  box-shadow: 0 0 12px #0ea5e9;
+  animation: ldSparkleFloat 4.6s ease-in-out 1.8s infinite;
+}
+
+.ld-sparkle.sp-5 {
+  top: 45%;
+  left: 8%;
+  background: #f43f5e;
+  box-shadow: 0 0 10px #e11d48;
+  animation: ldSparkleFloat 3.2s ease-in-out 0.4s infinite;
+}
+
+.ld-sparkle.sp-6 {
+  top: 40%;
+  right: 10%;
+  background: #34d399;
+  box-shadow: 0 0 10px #10b981;
+  animation: ldSparkleFloat 4.8s ease-in-out 2.2s infinite;
+}
+
+.ld-sparkle.sp-7 {
+  top: 10%;
+  left: 48%;
+  background: #ffffff;
+  box-shadow: 0 0 14px #ffffff;
+  animation: ldSparkleFloat 2.8s ease-in-out 1.4s infinite;
+}
+
+.ld-sparkle.sp-8 {
+  bottom: 12%;
+  left: 52%;
+  background: #c084fc;
+  box-shadow: 0 0 12px #a855f7;
+  animation: ldSparkleFloat 3.9s ease-in-out 0.9s infinite;
+}
+
+/* Listening Mode: Subtle Emerald Resonance */
+.ld-wave-emitter.is-listening .ld-wave-1 {
+  border: 1.5px solid rgba(16, 185, 129, 0.6);
+  box-shadow: 0 0 18px rgba(16, 185, 129, 0.4);
+  animation: ldWavePulse3D1 2.6s ease-out infinite;
+}
+
+.ld-orb-live {
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+/* 3D Orb in Speaking State: Vibrant Iridescent Sphere */
 .ld-orb-live.is-speaking {
-  transform: scale(1.06);
-  animation: ld-breathe 1.2s ease-in-out infinite;
+  background: radial-gradient(circle at 32% 28%, #ffffff 0%, #67e8f9 22%, #6366f1 58%, #1e1b4b 100%);
+  border-color: rgba(255, 255, 255, 0.95);
+  animation: ldOrbSpeaking3D 1.3s ease-in-out infinite alternate;
 }
 
 .ld-orb-live.is-thinking {
-  background: radial-gradient(circle at 35% 30%, #f2f2f2 0%, #bdbdbd 60%, #7a7a7a 100%);
+  background: radial-gradient(circle at 35% 30%, #fef3c7 0%, #f59e0b 60%, #78350f 100%);
+  border-color: #fbbf24;
+  box-shadow: 0 0 25px rgba(245, 158, 11, 0.5);
 }
 
 /* LiveKit BarVisualizer inside the orb */
@@ -172,19 +543,33 @@
   gap: 6px;
   width: 70%;
   height: 46%;
+  background: transparent !important;
+  border: none !important;
+}
+
+.ld-visualizer.lk-audio-bar-visualizer {
+  background: transparent !important;
+  border: none !important;
 }
 
 .ld-visualizer .lk-audio-bar {
   width: 9px;
   min-height: 9px;
   border-radius: 999px;
-  background: rgba(0, 0, 0, 0.28);
+  background: rgba(255, 255, 255, 0.45);
   transition: height 0.08s linear, background 0.2s ease;
 }
 
 .ld-visualizer .lk-audio-bar[data-lk-highlighted='true'],
 .ld-visualizer .lk-audio-bar.lk-highlighted {
-  background: #000;
+  background: #ffffff;
+}
+
+/* Vibrant Colorful Visualizer Audio Bars When Speaking */
+.is-speaking .ld-visualizer .lk-audio-bar[data-lk-highlighted='true'],
+.is-speaking .ld-visualizer .lk-audio-bar.lk-highlighted {
+  background: linear-gradient(180deg, #ffffff 0%, #67e8f9 30%, #818cf8 70%, #f472b6 100%) !important;
+  box-shadow: 0 0 12px rgba(99, 102, 241, 0.95);
 }
 
 /* ---- Text ---- */
@@ -369,11 +754,21 @@
 
 .ld-live,
 .ld-room {
+  position: relative;
   width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 0.35rem;
+  z-index: 2;
+}
+
+.ld-live .ld-title,
+.ld-live .ld-caption,
+.ld-live .ld-controls,
+.ld-live .ld-stage-3d {
+  position: relative;
+  z-index: 10;
 }
 
 .ld-controls {
@@ -422,12 +817,12 @@
   font-weight: 700;
   font-size: 0.9rem;
   cursor: pointer;
-  box-shadow: 0 4px 0 #000, inset 0 1px 1px rgba(255, 255, 255, 0.45);
+  box-shadow: 0 4px 14px rgba(220, 38, 38, 0.35), inset 0 1px 1px rgba(255, 255, 255, 0.45);
 }
 
 .ld-end:active {
-  transform: translateY(3px);
-  box-shadow: 0 1px 0 #000;
+  transform: translateY(2px);
+  box-shadow: 0 2px 6px rgba(220, 38, 38, 0.25);
 }
 
 /* ---- Footer ---- */
@@ -475,9 +870,187 @@
   100% { box-shadow: 0 0 0 0 rgba(255, 77, 77, 0); }
 }
 
+@keyframes ldWavePulse3D1 {
+  0% {
+    transform: perspective(600px) rotateX(62deg) rotateY(15deg) scale(0.72);
+    opacity: 0.95;
+  }
+  100% {
+    transform: perspective(600px) rotateX(62deg) rotateY(15deg) scale(1.65);
+    opacity: 0;
+  }
+}
+
+@keyframes ldWavePulse3D2 {
+  0% {
+    transform: perspective(600px) rotateX(50deg) rotateY(-25deg) scale(0.72);
+    opacity: 0.9;
+  }
+  100% {
+    transform: perspective(600px) rotateX(50deg) rotateY(-25deg) scale(1.65);
+    opacity: 0;
+  }
+}
+
+@keyframes ldWavePulse3D3 {
+  0% {
+    transform: perspective(600px) rotateX(74deg) scale(0.72);
+    opacity: 0.85;
+  }
+  100% {
+    transform: perspective(600px) rotateX(74deg) scale(1.75);
+    opacity: 0;
+  }
+}
+
+@keyframes ldAuraPulse {
+  0% {
+    opacity: 0.45;
+    transform: rotateX(68deg) scale(0.92);
+  }
+  100% {
+    opacity: 0.9;
+    transform: rotateX(68deg) scale(1.15);
+  }
+}
+
+@keyframes ldOrbSpeaking3D {
+  0% {
+    transform: scale(1.02) translateY(0);
+    box-shadow: 0 0 25px rgba(99, 102, 241, 0.65), 0 0 50px rgba(168, 85, 247, 0.35), inset 0 3px 6px #ffffff;
+  }
+  100% {
+    transform: scale(1.08) translateY(-3px);
+    box-shadow: 0 0 45px rgba(6, 182, 212, 0.85), 0 0 75px rgba(217, 70, 239, 0.55), inset 0 3px 6px #ffffff;
+  }
+}
+
+@keyframes ldScreenRipple {
+  0% {
+    transform: scale(0.65);
+    opacity: 0.95;
+  }
+  50% {
+    opacity: 0.6;
+  }
+  100% {
+    transform: scale(2.8);
+    opacity: 0;
+  }
+}
+
+@keyframes ldOrbitSpinLat {
+  0% {
+    transform: rotateX(65deg) rotateY(20deg) rotateZ(0deg);
+  }
+  100% {
+    transform: rotateX(65deg) rotateY(20deg) rotateZ(360deg);
+  }
+}
+
+@keyframes ldOrbitSpinLong {
+  0% {
+    transform: rotateX(-50deg) rotateY(35deg) rotateZ(0deg);
+  }
+  100% {
+    transform: rotateX(-50deg) rotateY(35deg) rotateZ(360deg);
+  }
+}
+
+@keyframes ldOrbitSpinDiag {
+  0% {
+    transform: rotateX(72deg) rotateY(-40deg) rotateZ(0deg);
+  }
+  100% {
+    transform: rotateX(72deg) rotateY(-40deg) rotateZ(360deg);
+  }
+}
+
+@keyframes ldCenterOrbit {
+  0% {
+    transform: perspective(500px) rotateX(62deg) rotateZ(0deg);
+  }
+  100% {
+    transform: perspective(500px) rotateX(62deg) rotateZ(360deg);
+  }
+}
+
+@keyframes ldScreenAuroraRotate1 {
+  0% {
+    transform: rotate(0deg) scale(1);
+  }
+  50% {
+    transform: rotate(180deg) scale(1.18);
+  }
+  100% {
+    transform: rotate(360deg) scale(1);
+  }
+}
+
+@keyframes ldScreenAuroraRotate2 {
+  0% {
+    transform: rotate(360deg) scale(1.1);
+  }
+  50% {
+    transform: rotate(180deg) scale(0.92);
+  }
+  100% {
+    transform: rotate(0deg) scale(1.1);
+  }
+}
+
+@keyframes ldScreenAuroraBreathe {
+  0% {
+    transform: scale(0.9) translate(-10px, -10px);
+  }
+  100% {
+    transform: scale(1.15) translate(15px, 15px);
+  }
+}
+
+@keyframes ldSparkleFloat {
+  0%, 100% {
+    transform: translateY(0) scale(1);
+    opacity: 0.3;
+  }
+  50% {
+    transform: translateY(-16px) scale(1.6);
+    opacity: 1;
+  }
+}
+
+@keyframes ldHorizonScroll {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 0 24px;
+  }
+}
+
+@keyframes ldCardSpeakingGlow {
+  0% {
+    box-shadow: 
+      0 24px 70px rgba(0, 0, 0, 0.85),
+      0 0 60px rgba(6, 182, 212, 0.4),
+      0 0 120px rgba(217, 70, 239, 0.25),
+      inset 0 1px 0 rgba(255, 255, 255, 0.3),
+      inset 0 -1px 0 rgba(0, 0, 0, 0.6);
+  }
+  100% {
+    box-shadow: 
+      0 24px 80px rgba(0, 0, 0, 0.95),
+      0 0 95px rgba(6, 182, 212, 0.7),
+      0 0 180px rgba(217, 70, 239, 0.45),
+      inset 0 1px 0 rgba(255, 255, 255, 0.45),
+      inset 0 -1px 0 rgba(0, 0, 0, 0.6);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .ld-orb-ring,
   .ld-orb-live.is-speaking,
+  .ld-wave-ring,
   .ld-dot.is-live {
     animation: none;
   }

@@ -13,7 +13,6 @@ import { loadVisitor, saveVisitor, validateVisitor } from '@/components/calling/
 import '@/components/calling/calling.css';
 import {
   PhoneCall,
-  Sparkles,
   Headphones,
   CheckCircle2,
   Zap,
@@ -21,13 +20,13 @@ import {
   Languages,
   Activity,
   CalendarCheck,
-  Bot,
   Radio,
   Clock,
   ArrowRight,
   Sliders,
   Cpu,
   HelpCircle,
+  AlertCircle,
 } from 'lucide-react';
 
 // Dynamically import LiveKitModal with SSR disabled for client-side WebRTC compatibility
@@ -258,7 +257,7 @@ export default function DemoPage() {
                     justifyContent: 'center',
                   }}
                 >
-                  <Bot size={32} color="#FFFFFF" />
+                  <Radio size={30} color="#FFFFFF" />
                 </div>
 
                 <h3 style={{ fontSize: '1.45rem', fontWeight: 800, color: '#FFFFFF' }}>
@@ -292,9 +291,13 @@ export default function DemoPage() {
                         fontSize: '0.85rem',
                         fontFamily: 'var(--font-mono, monospace)',
                         textAlign: 'left',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '0.5rem',
                       }}
                     >
-                      ⚠️ {cockpitError}
+                      <AlertCircle size={15} />
+                      <span>{cockpitError}</span>
                     </div>
                   )}
 
@@ -565,14 +568,16 @@ export default function DemoPage() {
             See practical recovery results before deciding.
           </p>
 
-          <button
-            onClick={handleSupportClick}
+          <a
+            href="https://riaaiagent.cc/"
+            target="_blank"
+            rel="noopener noreferrer"
             className="btn-skeuo-primary"
-            style={{ marginTop: '0.5rem' }}
+            style={{ marginTop: '0.5rem', textDecoration: 'none' }}
           >
-            <Bot size={18} color="#000000" />
-            <span>Start 100-Minute Free Demo</span>
-          </button>
+            <PhoneCall size={18} color="#000000" />
+            <span>Launch 100-Minute Test Fleet</span>
+          </a>
         </div>
 
         {/* Global 3-Space Footer */}

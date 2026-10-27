@@ -74,7 +74,7 @@ export default function SynergySection({ isMuted, isActive = false }: SynergySec
               fontWeight: 800,
               lineHeight: 1.12,
               letterSpacing: '-0.02em',
-              color: '#000000',
+              color: '#FFFFFF',
             }}
           >
             Enterprise Synergy: Autonomous Precision Meets Human Empathy

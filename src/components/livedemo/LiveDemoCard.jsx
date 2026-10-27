@@ -100,7 +100,7 @@ export default function LiveDemoCard() {
   }, []);
 
   return (
-    <div className="ld-card" aria-live="polite">
+    <div className={`ld-card ${stage === 'live' ? 'is-live-card' : ''}`} aria-live="polite">
       <div className="ld-card-head">
         <span className="ld-label">
           <span className={`ld-dot ${stage === 'live' ? 'is-live' : ''}`} />
@@ -256,7 +256,7 @@ export default function LiveDemoCard() {
   );
 }
 
-const STATE_TEXT = {
+export const STATE_TEXT = {
   connecting: 'Connecting…',
   initializing: 'RIA is joining…',
   listening: 'Listening…',
@@ -264,7 +264,7 @@ const STATE_TEXT = {
   speaking: 'RIA is speaking',
 };
 
-function LiveCall({ visitorName, onEnd }) {
+export function LiveCall({ visitorName, onEnd }) {
   const { state, audioTrack, agentTranscriptions } = useVoiceAssistant();
   const { localParticipant, isMicrophoneEnabled } = useLocalParticipant();
   const room = useRoomContext();
@@ -273,10 +273,73 @@ function LiveCall({ visitorName, onEnd }) {
 
   const caption = agentTranscriptions?.length ? agentTranscriptions[agentTranscriptions.length - 1].text : '';
 
+  useEffect(() => {
+    if (typeof document !== 'undefined') {
+      document.body.dataset.riaState = state || 'idle';
+      if (state === 'speaking') {
+        document.body.classList.add('ria-agent-speaking');
+      } else {
+        document.body.classList.remove('ria-agent-speaking');
+      }
+    }
+    return () => {
+      if (typeof document !== 'undefined') {
+        delete document.body.dataset.riaState;
+        document.body.classList.remove('ria-agent-speaking');
+      }
+    };
+  }, [state]);
+
   return (
-    <div className="ld-live">
-      <div className={`ld-orb ld-orb-live is-${state || 'connecting'}`}>
-        <BarVisualizer className="ld-visualizer" state={state} barCount={5} track={audioTrack} />
+    <div className={`ld-live is-${state || 'idle'}`}>
+      {/* Total Screen Ambient Atmospheric Effects */}
+      <div className={`ld-screen-ambient-field is-${state || 'idle'}`} aria-hidden="true">
+        {/* Screen Aurora Energy Floods */}
+        <div className="ld-screen-aurora ld-aurora-1" />
+        <div className="ld-screen-aurora ld-aurora-2" />
+        <div className="ld-screen-aurora ld-aurora-3" />
+
+        {/* Total Screen Expanding Soundwave Ripples */}
+        <div className="ld-screen-ripple-ring ripple-screen-1" />
+        <div className="ld-screen-ripple-ring ripple-screen-2" />
+        <div className="ld-screen-ripple-ring ripple-screen-3" />
+        <div className="ld-screen-ripple-ring ripple-screen-4" />
+
+        {/* 3D Cosmic Gyroscope / Orbital Wave Rings */}
+        <div className="ld-screen-orbital-rig">
+          <div className="ld-orbital-ring ring-lat" />
+          <div className="ld-orbital-ring ring-long" />
+          <div className="ld-orbital-ring ring-diag" />
+        </div>
+
+        {/* 3D Sound Horizon Equalizer / Spatial Grid */}
+        <div className="ld-screen-sound-horizon" />
+
+        {/* Floating Luminous Stardust Sparkles */}
+        <span className="ld-sparkle sp-1" />
+        <span className="ld-sparkle sp-2" />
+        <span className="ld-sparkle sp-3" />
+        <span className="ld-sparkle sp-4" />
+        <span className="ld-sparkle sp-5" />
+        <span className="ld-sparkle sp-6" />
+        <span className="ld-sparkle sp-7" />
+        <span className="ld-sparkle sp-8" />
+      </div>
+
+      <div className="ld-stage-3d">
+        {/* 3D Dynamic Ambient Acoustic Waves */}
+        <div className={`ld-wave-emitter is-${state || 'idle'}`} aria-hidden="true">
+          <div className="ld-wave-ring ld-wave-1" />
+          <div className="ld-wave-ring ld-wave-2" />
+          <div className="ld-wave-ring ld-wave-3" />
+          <div className="ld-orbital-ring-center" />
+          <div className="ld-wave-aura" />
+        </div>
+
+        {/* 3D Orb Visualizer */}
+        <div className={`ld-orb ld-orb-live is-${state || 'connecting'}`}>
+          <BarVisualizer className="ld-visualizer" state={state} barCount={5} track={audioTrack} />
+        </div>
       </div>
       <p className="ld-title">{STATE_TEXT[state] || (visitorName ? `Hi ${visitorName}` : 'Connected')}</p>
       <p className="ld-caption">{caption || 'Speak in Telugu, Hindi or English — RIA follows you.'}</p>

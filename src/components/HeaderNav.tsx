@@ -9,7 +9,6 @@ import {
   VolumeX,
   Maximize,
   Minimize,
-  Sparkles,
   Menu,
   X,
   Home,
@@ -114,7 +113,7 @@ export default function HeaderNav({
           >
             <Image
               src="/images/ria-logo.jpg"
-              alt="RIA ai Agent Logo"
+              alt="RIA Platform Logo"
               fill
               style={{ objectFit: 'contain' }}
               priority
@@ -132,7 +131,7 @@ export default function HeaderNav({
                 lineHeight: 1.2,
               }}
             >
-              RIA <span style={{ color: '#A3A3A3' }}>//</span> AI AGENT
+              RIA <span style={{ color: '#A3A3A3' }}>//</span> PLATFORM
             </div>
             <div
               style={{
@@ -143,7 +142,7 @@ export default function HeaderNav({
                 lineHeight: 1.2,
               }}
             >
-              AI-POWERED DISTRIBUTION
+              DISTRIBUTION TELEMETRY PLATFORM
             </div>
           </div>
         </Link>
@@ -315,7 +314,7 @@ export default function HeaderNav({
               >
                 <Image
                   src="/images/ria-logo.jpg"
-                  alt="RIA ai Agent Logo"
+                  alt="RIA Platform Logo"
                   fill
                   style={{ objectFit: 'contain' }}
                 />

@@ -23,7 +23,6 @@ import {
   BrainCircuit,
   Target,
   PhoneForwarded,
-  Sparkles,
 } from 'lucide-react';
 import HeaderNav from '@/components/HeaderNav';
 import ParticleCanvas from '@/components/ParticleCanvas';
@@ -209,7 +208,7 @@ export default function PricingPage() {
 
           <div className="pricing-hero-ctas">
             <a
-              href={`${WA_BASE}${encodeURIComponent(START_MSG)}`}
+              href="https://riaaiagent.cc/"
               target="_blank"
               rel="noopener noreferrer"
               className="btn-primary-ria"
@@ -218,7 +217,7 @@ export default function PricingPage() {
               <ArrowRight size={18} />
             </a>
 
-            <Link href="/demo" className="btn-ghost-ria">
+            <Link href="/contact" className="btn-ghost-ria">
               <span>Book a Demo</span>
             </Link>
           </div>
@@ -246,8 +245,8 @@ export default function PricingPage() {
             <div className="pricing-card-header">
               <h2 className="pricing-card-title">RIA COLLECTION INTELLIGENCE</h2>
               <span className="pricing-launch-badge">
-                <Sparkles size={13} />
-                <span>LAUNCH OFFER</span>
+                <ShieldCheck size={13} />
+                <span>LAUNCH SPECIFICATION</span>
               </span>
             </div>
 
@@ -298,7 +297,7 @@ export default function PricingPage() {
             </div>
 
             <a
-              href={`${WA_BASE}${encodeURIComponent(START_MSG)}`}
+              href="https://riaaiagent.cc/"
               target="_blank"
               rel="noopener noreferrer"
               className="btn-primary-ria btn-block-ria"
@@ -792,7 +791,7 @@ export default function PricingPage() {
 
           <div className="pricing-hero-ctas">
             <a
-              href={`${WA_BASE}${encodeURIComponent(START_MSG)}`}
+              href="https://riaaiagent.cc/"
               target="_blank"
               rel="noopener noreferrer"
               className="btn-primary-ria"
@@ -800,7 +799,7 @@ export default function PricingPage() {
               <span>Start with RIA</span>
               <ArrowRight size={18} />
             </a>
-            <Link href="/demo" className="btn-ghost-ria">
+            <Link href="/contact" className="btn-ghost-ria">
               <span>Book a Demo</span>
             </Link>
           </div>
@@ -823,7 +822,7 @@ export default function PricingPage() {
             <small>+ ₹3/min AI calling · excl. GST</small>
           </div>
           <a
-            href={`${WA_BASE}${encodeURIComponent(START_MSG)}`}
+            href="https://riaaiagent.cc/"
             target="_blank"
             rel="noopener noreferrer"
             className="btn-primary-ria"

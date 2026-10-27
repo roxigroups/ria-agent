@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 
-const PHONE_NUMBER = '917248199999';
+const PHONE_NUMBER = '918106668552';
 const MESSAGE = `Hello Team Ria,
 we are looking for an voice Agent demo.`;
 
@@ -156,7 +156,7 @@ export default function WhatsAppWidget() {
         rel="noopener noreferrer"
         className="wa-floating-btn"
         aria-label="Chat with RIA team on WhatsApp for a voice agent demo"
-        title="Chat on WhatsApp (+91 72481 99999)"
+        title="Chat on WhatsApp (+91 8106668552)"
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >

@@ -652,10 +652,6 @@ export default function AboutPage() {
         {/* ===================== HERO ===================== */}
         <section className="responsive-grid-2col" aria-labelledby="about-h1">
           <div className="stack">
-            <div className="skeuo-badge">
-              <span className="amber-led" />
-              <span>ABOUT RIA // ROXY INTELLIGENT AI</span>
-            </div>
             <h1 id="about-h1" className="page-h1">
               Distribution Intelligence, Built by a Distributor
             </h1>

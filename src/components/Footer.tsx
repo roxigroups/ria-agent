@@ -1,8 +1,7 @@
 'use client';
 
 import React from 'react';
-import Link from 'next/link';
-import { ArrowUpRight, ShieldCheck, Sparkles, MessageCircle, Phone, Globe } from 'lucide-react';
+import { ArrowUpRight, ShieldCheck, MessageCircle, Phone, Globe } from 'lucide-react';
 
 export default function Footer() {
   const socialSpaces = [

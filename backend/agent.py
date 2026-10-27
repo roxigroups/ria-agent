@@ -118,12 +118,19 @@ STT_PROMPT = (
     "Product names: RIA, Roxy, Tally, Zoho Books, Busy, WhatsApp."
 )
 
-# Common Whisper ghost hallucinations on silence/noise in Indian audio
+# Common Whisper ghost hallucinations on silence/noise in Indian and English audio
 STT_HALLUCINATION_BLACKLIST = {
+    # Indic hallucinations on silence
     "धन्यवाद", "धन्यवाद।", "नमस्ते", "नमस्ते।", "हाँ", "हाँ।", "हाँ जी", "अच्छा",
     "थैंक यू", "थैंक यू।", "देखने के लिए धन्यवाद", "वीडियो देखने के लिए धन्यवाद",
     "कृपया सब्सक्राइब करें", "लाइक करें", "चैनल को सब्सक्राइब करें", "सब्सक्राइब करें",
+    # English silence / background noise hallucinations
     "thank you for watching", "thanks for watching", "subtitles by", "please subscribe",
+    "hello sir how are you", "hello, sir. how are you?", "hello, sir. how are you",
+    "hello sir", "hello, sir", "hello how are you", "hello, how are you?", "how are you?",
+    "how are you", "how are you doing?", "how are you doing", "can you hear me?",
+    "can you hear me", "am i audible?", "am i audible", "thank you.", "thank you",
+    "good morning", "good afternoon", "good evening", "you", "bye", "goodbye",
 }
 
 
@@ -246,9 +253,9 @@ def detect_language(text: str, previous: str = "en") -> str:
 
 # after) that sound like what RIA said are dropped before they count as input.
 
-ECHO_SCORE_THRESHOLD = 0.6
+ECHO_SCORE_THRESHOLD = 0.5
 
-ECHO_TAIL_SECONDS = 2.0
+ECHO_TAIL_SECONDS = 3.5
 
 
 
@@ -1015,7 +1022,12 @@ class RiaAgent(Agent):
 
         # Drop known Whisper phantom hallucinations on background noise/silence
         clean_text = text.strip()
-        if clean_text in STT_HALLUCINATION_BLACKLIST or clean_text.lower() in STT_HALLUCINATION_BLACKLIST:
+        normalized_text = re.sub(r"[^\w\s]", "", clean_text.lower()).strip()
+        if (
+            clean_text in STT_HALLUCINATION_BLACKLIST
+            or clean_text.lower() in STT_HALLUCINATION_BLACKLIST
+            or normalized_text in STT_HALLUCINATION_BLACKLIST
+        ):
             logger.info("Ignoring known STT phantom hallucination: %r", text)
             raise StopResponse()
 
@@ -1130,11 +1142,11 @@ def prewarm(proc: JobProcess):
 
     proc.userdata["vad"] = silero.VAD.load(
 
-        min_silence_duration=_env_float("VAD_MIN_SILENCE_DURATION", 0.3),
+        min_silence_duration=_env_float("VAD_MIN_SILENCE_DURATION", 0.55),
 
-        min_speech_duration=_env_float("VAD_MIN_SPEECH_DURATION", 0.15),
+        min_speech_duration=_env_float("VAD_MIN_SPEECH_DURATION", 0.35),
 
-        activation_threshold=_env_float("VAD_ACTIVATION_THRESHOLD", 0.6),
+        activation_threshold=_env_float("VAD_ACTIVATION_THRESHOLD", 0.72),
 
     )
 

@@ -9,7 +9,6 @@ import {
   Maximize, 
   Minimize, 
   ChevronDown, 
-  Sparkles, 
   Menu, 
   X, 
   Home, 
@@ -126,7 +125,7 @@ export default function NavigationDock({
           >
             <Image
               src="/images/ria-logo.jpg"
-              alt="RIA ai Agent Logo"
+              alt="RIA Platform Logo"
               fill
               style={{ objectFit: 'contain' }}
               priority
@@ -144,7 +143,7 @@ export default function NavigationDock({
                 lineHeight: 1.2,
               }}
             >
-              RIA <span style={{ color: '#A3A3A3' }}>//</span> AI AGENT
+              RIA <span style={{ color: '#A3A3A3' }}>//</span> PLATFORM
             </div>
             <div
               style={{
@@ -477,7 +476,7 @@ export default function NavigationDock({
               >
                 <Image
                   src="/images/ria-logo.jpg"
-                  alt="RIA ai Agent Logo"
+                  alt="RIA Platform Logo"
                   fill
                   style={{ objectFit: 'contain' }}
                 />
@@ -491,7 +490,7 @@ export default function NavigationDock({
                   color: '#FFFFFF',
                 }}
               >
-                RIA AI AGENT
+                RIA PLATFORM
               </span>
             </div>
 

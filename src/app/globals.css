@@ -650,3 +650,60 @@ body {
     overflow: visible;
   }
 }
+
+/* ---- Total Screen Reactive Voice Atmosphere (When RIA is Speaking) ---- */
+body.ria-agent-speaking::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 99985;
+  background:
+    radial-gradient(circle at 18% 22%, rgba(6, 182, 212, 0.16) 0%, transparent 45%),
+    radial-gradient(circle at 82% 78%, rgba(217, 70, 239, 0.14) 0%, transparent 48%),
+    radial-gradient(circle at 50% 50%, rgba(99, 102, 241, 0.11) 0%, transparent 60%);
+  animation: totalScreenAurora 5s ease-in-out infinite alternate;
+}
+
+body.ria-agent-speaking::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 99986;
+  box-shadow: 
+    inset 0 0 100px rgba(6, 182, 212, 0.22),
+    inset 0 0 50px rgba(217, 70, 239, 0.15);
+  animation: totalScreenVignette 2.4s ease-in-out infinite alternate;
+}
+
+@keyframes totalScreenAurora {
+  0% {
+    opacity: 0.55;
+    transform: scale(0.98);
+    filter: hue-rotate(0deg);
+  }
+  50% {
+    opacity: 0.85;
+    transform: scale(1.02);
+    filter: hue-rotate(15deg);
+  }
+  100% {
+    opacity: 0.65;
+    transform: scale(1);
+    filter: hue-rotate(-10deg);
+  }
+}
+
+@keyframes totalScreenVignette {
+  0% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 0.95;
+  }
+}

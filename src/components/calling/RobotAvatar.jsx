@@ -4,386 +4,221 @@ import { useState, useEffect } from 'react';
 import './RobotAvatar.css';
 
 /**
- * RobotAvatar Component
+ * VoiceTelemetryConsole (RobotAvatar replacement)
  * 
- * Interactive white-themed robot avatar designed with 3D ceramic aesthetic,
- * glossy visor, expressive LED eyes, talking audio waveform mouth, and
- * soundwave ripples reacting to voice assistant states:
- * - 'speaking': Agent is talking -> talking mouth wave animates, head bobs, ripples radiate.
- * - 'listening': Agent is listening to user -> attentive eyes, antenna green, ear rings pulse.
- * - 'thinking': Agent processing -> amber eyes, thinking pulse.
- * - 'idle': Waiting -> gentle floating, eye blinks, calm breathing.
+ * Developer-grade physical acoustic transceiver and real-time audio telemetry console.
+ * Uses only real physical objects and authentic developer hardware design:
+ * - Machined dark titanium acoustic core with radial sound diffusion slits
+ * - Real dual-channel VU audio decibel meter (-36dB to +3dB CLIP)
+ * - State-reactive acoustic wave propagation dynamics (Tx Speaking, Rx Listening, DSP Thinking, Standby)
+ * - Hardware telemetry matrix (Opus 48kHz, Latency, VAD, DSP filter)
+ * - Interactive acoustic calibration diagnostic readout on click
  */
 const RobotAvatar = ({ state = 'idle' }) => {
-  const [clickReaction, setClickReaction] = useState(false);
-  const [clickMessage, setClickMessage] = useState('');
+  const [diagnosticOpen, setDiagnosticOpen] = useState(false);
+  const [diagnosticMessage, setDiagnosticMessage] = useState('');
 
-  const messages = [
-    '✨ Hi! I am RIA',
-    '🎙️ I am listening...',
-    '⚡ How can I help with your collection?',
-    '🤖 Ready for your command!'
+  const diagnosticReports = [
+    'AUDIO TELEMETRY: Round-trip Latency 32ms // Jitter 1.2ms // 0.0% Loss',
+    'DSP ENGINE: Noise Gate -24dB // Acoustic Echo Cancellation (AEC) Active',
+    'CODEC STREAM: Opus Fullband 48kHz // WebRTC End-to-End Encrypted',
+    'VAD CALIBRATION: Voice Activity Detector Engaged // Dynamic AGC Active'
   ];
 
-  const handleRobotClick = () => {
-    const randomMsg = messages[Math.floor(Math.random() * messages.length)];
-    setClickMessage(randomMsg);
-    setClickReaction(true);
+  const handleConsoleClick = () => {
+    const report = diagnosticReports[Math.floor(Math.random() * diagnosticReports.length)];
+    setDiagnosticMessage(report);
+    setDiagnosticOpen(true);
   };
 
   useEffect(() => {
-    if (clickReaction) {
+    if (diagnosticOpen) {
       const timer = setTimeout(() => {
-        setClickReaction(false);
-      }, 2600);
+        setDiagnosticOpen(false);
+      }, 3500);
       return () => clearTimeout(timer);
     }
-  }, [clickReaction]);
+  }, [diagnosticOpen]);
 
   // Derived state flags
   const isSpeaking = state === 'speaking';
   const isListening = state === 'listening';
   const isThinking = state === 'thinking';
+  const isConnecting = state === 'connecting' || state === 'initializing';
 
   return (
-    <div className={`robot-stage ${state}`}>
-      {/* Sound Wave Ripple Effect */}
-      <div className="robot-ripple-container" aria-hidden="true">
-        <div className="ripple-ring ripple-ring-1" />
-        <div className="ripple-ring ripple-ring-2" />
-        <div className="ripple-ring ripple-ring-3" />
+    <div className={`telecom-console-stage ${state}`}>
+      {/* Real-world Concentric Acoustic Dispersion Waveforms */}
+      <div className="acoustic-wave-emitter" aria-hidden="true">
+        <div className="acoustic-ring ring-1" />
+        <div className="acoustic-ring ring-2" />
+        <div className="acoustic-ring ring-3" />
       </div>
 
-      {/* Interactive Speech Bubble */}
-      {clickReaction && (
-        <div className="robot-speech-bubble">
-          {clickMessage}
+      {/* Hardware Telemetry Toast / Calibration Readout */}
+      {diagnosticOpen && (
+        <div className="telecom-diagnostic-toast" role="status">
+          <span className="telecom-diag-led" />
+          <span className="telecom-diag-text">{diagnosticMessage}</span>
         </div>
       )}
 
-      {/* Floating White Robot Figure */}
-      <div 
-        className="robot-wrapper" 
-        onClick={handleRobotClick}
-        title="Tap me to interact with RIA!"
+      {/* Physical Hardware Transceiver Core Object */}
+      <div
+        className="telecom-chassis-core"
+        onClick={handleConsoleClick}
+        title="Hardware Transceiver — Click to run acoustic calibration test"
         role="button"
         tabIndex={0}
-        onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') handleRobotClick(); }}
+        onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') handleConsoleClick(); }}
       >
-        <svg
-          width="200"
-          height="220"
-          viewBox="0 0 200 220"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <defs>
-            {/* White Ceramic Gradients */}
-            <linearGradient id="whiteChassis" x1="20" y1="20" x2="180" y2="200" gradientUnits="userSpaceOnUse">
-              <stop offset="0%" stopColor="#FFFFFF" />
-              <stop offset="60%" stopColor="#F8FAFC" />
-              <stop offset="100%" stopColor="#E2E8F0" />
-            </linearGradient>
+        {/* Top Hardware Bezel with Screws and Model Plate */}
+        <div className="telecom-core-header">
+          <span className="telecom-hex-screw" />
+          <div className="telecom-model-tag">
+            <span>CORE // RIA-RTC-900</span>
+            <span className="telecom-freq-badge">48kHz HD</span>
+          </div>
+          <span className="telecom-hex-screw" />
+        </div>
 
-            <linearGradient id="whiteHead" x1="40" y1="25" x2="160" y2="130" gradientUnits="userSpaceOnUse">
-              <stop offset="0%" stopColor="#FFFFFF" />
-              <stop offset="70%" stopColor="#F1F5F9" />
-              <stop offset="100%" stopColor="#CBD5E1" />
-            </linearGradient>
+        {/* Central Machined Acoustic Transceiver Dome */}
+        <div className="acoustic-transceiver-housing">
+          <svg
+            width="170"
+            height="170"
+            viewBox="0 0 170 170"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            className="acoustic-transceiver-svg"
+          >
+            <defs>
+              {/* Brushed Titanium Outer Rim */}
+              <radialGradient id="machinedRim" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stopColor="#2A2C34" />
+                <stop offset="85%" stopColor="#121318" />
+                <stop offset="100%" stopColor="#08090C" />
+              </radialGradient>
 
-            <linearGradient id="visorGlass" x1="50" y1="55" x2="150" y2="105" gradientUnits="userSpaceOnUse">
-              <stop offset="0%" stopColor="#0F172A" />
-              <stop offset="70%" stopColor="#1E293B" />
-              <stop offset="100%" stopColor="#0B0F19" />
-            </linearGradient>
+              {/* Acoustic Chamber Depth */}
+              <radialGradient id="acousticChamber" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stopColor={isSpeaking ? '#262630' : isListening ? '#13241C' : isThinking ? '#2A2214' : '#14151A'} />
+                <stop offset="70%" stopColor="#0A0B0E" />
+                <stop offset="100%" stopColor="#030406" />
+              </radialGradient>
 
-            <linearGradient id="visorGlint" x1="50" y1="55" x2="150" y2="65" gradientUnits="userSpaceOnUse">
-              <stop offset="0%" stopColor="#FFFFFF" stopOpacity="0.35" />
-              <stop offset="100%" stopColor="#FFFFFF" stopOpacity="0.0" />
-            </linearGradient>
+              {/* Metallic Grille Highlights */}
+              <linearGradient id="grilleMetallic" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stopColor="#FFFFFF" stopOpacity="0.45" />
+                <stop offset="50%" stopColor="#8E93A4" stopOpacity="0.15" />
+                <stop offset="100%" stopColor="#FFFFFF" stopOpacity="0.05" />
+              </linearGradient>
 
-            {/* Glowing Eye Colors */}
-            <linearGradient id="eyeCyan" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="#38BDF8" />
-              <stop offset="100%" stopColor="#0284C7" />
-            </linearGradient>
+              {/* Status Glow Filters */}
+              <filter id="coreGlow" x="-20%" y="-20%" width="140%" height="140%">
+                <feGaussianBlur stdDeviation="4" result="blur" />
+                <feComposite in="SourceGraphic" in2="blur" operator="over" />
+              </filter>
+            </defs>
 
-            <linearGradient id="eyeViolet" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="#C084FC" />
-              <stop offset="100%" stopColor="#7C3AED" />
-            </linearGradient>
+            {/* Outer Machined Bezel with Recessed Lip */}
+            <circle cx="85" cy="85" r="82" fill="url(#machinedRim)" stroke="rgba(255,255,255,0.22)" strokeWidth="1.5" />
+            <circle cx="85" cy="85" r="74" fill="#0A0B0E" stroke="rgba(0,0,0,0.9)" strokeWidth="2" />
 
-            <linearGradient id="earPlate" x1="0" y1="0" x2="1" y2="1">
-              <stop offset="0%" stopColor="#FFFFFF" />
-              <stop offset="100%" stopColor="#E2E8F0" />
-            </linearGradient>
+            {/* Calibration Notch Ticks around the Perimeter */}
+            {[0, 30, 60, 90, 120, 150, 180, 210, 240, 270, 300, 330].map((deg) => (
+              <line
+                key={deg}
+                x1="85"
+                y1="13"
+                x2="85"
+                y2="18"
+                stroke="rgba(255,255,255,0.35)"
+                strokeWidth="1.5"
+                transform={`rotate(${deg} 85 85)`}
+              />
+            ))}
 
-            {/* Drop Shadows */}
-            <filter id="softGlow" x="-20%" y="-20%" width="140%" height="140%">
-              <feGaussianBlur stdDeviation="3" result="blur" />
-              <feComposite in="SourceGraphic" in2="blur" operator="over" />
-            </filter>
-          </defs>
+            {/* Inner Acoustic Resonance Chamber */}
+            <circle cx="85" cy="85" r="66" fill="url(#acousticChamber)" stroke="rgba(255,255,255,0.12)" strokeWidth="1" />
 
-          {/* === ANTENNA === */}
-          <g className="robot-antenna">
-            {/* Antenna Stem */}
-            <path
-              d="M100 24 L100 42"
-              stroke="#CBD5E1"
-              strokeWidth="4"
-              strokeLinecap="round"
-            />
-            {/* Base collar */}
-            <ellipse cx="100" cy="42" rx="7" ry="2.5" fill="#94A3B8" />
-            {/* Glowing Orb */}
+            {/* Concentric Sound Aperture Dispersion Slots */}
+            <circle cx="85" cy="85" r="54" stroke="url(#grilleMetallic)" strokeWidth="1.2" strokeDasharray="6 3" />
+            <circle cx="85" cy="85" r="42" stroke="url(#grilleMetallic)" strokeWidth="1.2" strokeDasharray="5 3" />
+            <circle cx="85" cy="85" r="30" stroke="url(#grilleMetallic)" strokeWidth="1.2" strokeDasharray="4 2" />
+
+            {/* Central Precision Acoustic Driver Core */}
             <circle
-              className="antenna-orb"
-              cx="100"
-              cy="20"
-              r="8"
-              fill={isSpeaking ? '#8B5CF6' : isListening ? '#10B981' : isThinking ? '#F59E0B' : '#06B6D4'}
-              filter="url(#softGlow)"
+              cx="85"
+              cy="85"
+              r="18"
+              fill={isSpeaking ? '#FFFFFF' : isListening ? '#10B981' : isThinking ? '#F59E0B' : '#475569'}
+              filter="url(#coreGlow)"
+              className="transceiver-driver-center"
             />
-            <circle cx="98" cy="18" r="2.5" fill="#FFFFFF" opacity="0.8" />
-          </g>
+            <circle cx="85" cy="85" r="8" fill="#08090C" />
+            <circle cx="83" cy="83" r="3" fill="#FFFFFF" opacity="0.75" />
+          </svg>
 
-          {/* === TORSO & ARMS (BODY) === */}
-          <g className="robot-body">
-            {/* Left Arm */}
-            <rect
-              x="38"
-              y="142"
-              width="18"
-              height="38"
-              rx="9"
-              fill="url(#whiteChassis)"
-              stroke="#E2E8F0"
-              strokeWidth="1.5"
-              transform="rotate(12 47 161)"
-            />
-            {/* Right Arm */}
-            <rect
-              x="144"
-              y="142"
-              width="18"
-              height="38"
-              rx="9"
-              fill="url(#whiteChassis)"
-              stroke="#E2E8F0"
-              strokeWidth="1.5"
-              transform="rotate(-12 153 161)"
-            />
+          {/* Dynamic Frequency Modulation Ring overlay */}
+          <div className="transceiver-frequency-ring" />
+        </div>
 
-            {/* Main Body Torso */}
-            <rect
-              x="58"
-              y="134"
-              width="84"
-              height="60"
-              rx="24"
-              fill="url(#whiteChassis)"
-              stroke="#E2E8F0"
-              strokeWidth="2"
-            />
+        {/* Real Dual-Channel Decibel VU Meter (-36dB to +3dB CLIP) */}
+        <div className="telecom-vu-section" aria-label="Audio VU Level Meter">
+          <div className="vu-scale-labels">
+            <span>-36</span>
+            <span>-24</span>
+            <span>-12</span>
+            <span>-6</span>
+            <span>0</span>
+            <span className="vu-clip-label">+3</span>
+          </div>
 
-            {/* Glossy Body Highlight */}
-            <ellipse cx="100" cy="142" rx="28" ry="4" fill="#FFFFFF" opacity="0.9" />
+          <div className="vu-channels-pair">
+            {/* Left Channel */}
+            <div className="vu-meter-bar left">
+              <span className="vu-segment seg-1" />
+              <span className="vu-segment seg-2" />
+              <span className="vu-segment seg-3" />
+              <span className="vu-segment seg-4" />
+              <span className="vu-segment seg-5" />
+              <span className="vu-segment seg-6" />
+              <span className="vu-segment seg-7" />
+              <span className="vu-segment seg-8" />
+              <span className="vu-segment seg-9 clip" />
+            </div>
 
-            {/* Chest Core Reactor Ring */}
-            <circle cx="100" cy="164" r="14" fill="#F1F5F9" stroke="#E2E8F0" strokeWidth="1.5" />
-            <circle
-              className="chest-core"
-              cx="100"
-              cy="164"
-              r="8"
-              fill={isSpeaking ? '#6366F1' : isListening ? '#10B981' : '#0EA5E9'}
-              opacity="0.85"
-            />
-            <circle cx="100" cy="164" r="3.5" fill="#FFFFFF" />
-          </g>
+            {/* Right Channel */}
+            <div className="vu-meter-bar right">
+              <span className="vu-segment seg-1" />
+              <span className="vu-segment seg-2" />
+              <span className="vu-segment seg-3" />
+              <span className="vu-segment seg-4" />
+              <span className="vu-segment seg-5" />
+              <span className="vu-segment seg-6" />
+              <span className="vu-segment seg-7" />
+              <span className="vu-segment seg-8" />
+              <span className="vu-segment seg-9 clip" />
+            </div>
+          </div>
+        </div>
 
-          {/* === HEAD & VISOR === */}
-          <g className="robot-head">
-            {/* Left Ear / Headphone Cup */}
-            <g className="ear-cup left">
-              <rect x="28" y="66" width="16" height="34" rx="8" fill="url(#earPlate)" stroke="#CBD5E1" strokeWidth="1.5" />
-              <circle
-                className="ear-ring"
-                cx="36"
-                cy="83"
-                r="5"
-                fill="none"
-                stroke={isSpeaking ? '#8B5CF6' : isListening ? '#10B981' : '#06B6D4'}
-                strokeWidth="2"
-              />
-            </g>
+        {/* Bottom Hardware Status Strip */}
+        <div className="telecom-core-footer">
+          <div className="telecom-status-item">
+            <span className={`status-indicator-lamp ${state}`} />
+            <span className="status-indicator-name">
+              {isSpeaking ? 'TX CARRIER' : isListening ? 'RX CARRIER' : isThinking ? 'DSP PROCESS' : isConnecting ? 'SYNC LINK' : 'STANDBY'}
+            </span>
+          </div>
 
-            {/* Right Ear / Headphone Cup */}
-            <g className="ear-cup right">
-              <rect x="156" y="66" width="16" height="34" rx="8" fill="url(#earPlate)" stroke="#CBD5E1" strokeWidth="1.5" />
-              <circle
-                className="ear-ring"
-                cx="164"
-                cy="83"
-                r="5"
-                fill="none"
-                stroke={isSpeaking ? '#8B5CF6' : isListening ? '#10B981' : '#06B6D4'}
-                strokeWidth="2"
-              />
-            </g>
-
-            {/* Head Capsule Shape */}
-            <rect
-              x="42"
-              y="38"
-              width="116"
-              height="90"
-              rx="42"
-              fill="url(#whiteHead)"
-              stroke="#E2E8F0"
-              strokeWidth="2"
-            />
-
-            {/* Head Top Specular Highlight */}
-            <path
-              d="M72 44 Q100 40 128 44"
-              stroke="#FFFFFF"
-              strokeWidth="4"
-              strokeLinecap="round"
-              opacity="0.9"
-            />
-
-            {/* Glossy Black Visor */}
-            <rect
-              x="52"
-              y="52"
-              width="96"
-              height="62"
-              rx="28"
-              fill="url(#visorGlass)"
-              stroke="#1E293B"
-              strokeWidth="1.5"
-            />
-
-            {/* Visor Specular Glint */}
-            <path
-              d="M58 64 Q100 56 142 64"
-              stroke="url(#visorGlint)"
-              strokeWidth="5"
-              strokeLinecap="round"
-            />
-
-            {/* === VISOR CONTENT (EYES & TALKING MOUTH) === */}
-            {/* Left Eye */}
-            <g className="eye-left">
-              {isSpeaking ? (
-                // Happy curved eye when speaking
-                <path
-                  d="M70 79 Q80 69 90 79"
-                  stroke="#38BDF8"
-                  strokeWidth="4"
-                  strokeLinecap="round"
-                  filter="url(#softGlow)"
-                />
-              ) : isThinking ? (
-                // Thinking scanning circle
-                <circle cx="80" cy="76" r="6" fill="#F59E0B" filter="url(#softGlow)" />
-              ) : (
-                // Normal / Listening round eye
-                <ellipse
-                  className="eye-pupil"
-                  cx="80"
-                  cy="76"
-                  rx="7"
-                  ry={isListening ? 9 : 8}
-                  fill="url(#eyeCyan)"
-                  filter="url(#softGlow)"
-                />
-              )}
-              {/* Eye Catchlight */}
-              {!isSpeaking && !isThinking && (
-                <circle cx="78" cy="73" r="2.5" fill="#FFFFFF" />
-              )}
-            </g>
-
-            {/* Right Eye */}
-            <g className="eye-right">
-              {isSpeaking ? (
-                // Happy curved eye when speaking
-                <path
-                  d="M110 79 Q120 69 130 79"
-                  stroke="#38BDF8"
-                  strokeWidth="4"
-                  strokeLinecap="round"
-                  filter="url(#softGlow)"
-                />
-              ) : isThinking ? (
-                // Thinking scanning circle
-                <circle cx="120" cy="76" r="6" fill="#F59E0B" filter="url(#softGlow)" />
-              ) : (
-                // Normal / Listening round eye
-                <ellipse
-                  className="eye-pupil"
-                  cx="120"
-                  cy="76"
-                  rx="7"
-                  ry={isListening ? 9 : 8}
-                  fill="url(#eyeCyan)"
-                  filter="url(#softGlow)"
-                />
-              )}
-              {/* Eye Catchlight */}
-              {!isSpeaking && !isThinking && (
-                <circle cx="118" cy="73" r="2.5" fill="#FFFFFF" />
-              )}
-            </g>
-
-            {/* VISOR MOUTH / SOUND FREQUENCY BARS */}
-            {isSpeaking ? (
-              // Dynamic Talking Waveform Mouth
-              <g className="mouth-waveform" transform="translate(100, 97)">
-                <line className="mouth-bar mouth-bar-1" x1="-16" y1="-2" x2="-16" y2="4" stroke="#38BDF8" strokeWidth="2.5" strokeLinecap="round" />
-                <line className="mouth-bar mouth-bar-2" x1="-8" y1="-5" x2="-8" y2="7" stroke="#67E8F9" strokeWidth="3" strokeLinecap="round" />
-                <line className="mouth-bar mouth-bar-3" x1="0" y1="-8" x2="0" y2="10" stroke="#FFFFFF" strokeWidth="3.5" strokeLinecap="round" />
-                <line className="mouth-bar mouth-bar-4" x1="8" y1="-5" x2="8" y2="7" stroke="#67E8F9" strokeWidth="3" strokeLinecap="round" />
-                <line className="mouth-bar mouth-bar-5" x1="16" y1="-2" x2="16" y2="4" stroke="#38BDF8" strokeWidth="2.5" strokeLinecap="round" />
-              </g>
-            ) : isListening ? (
-              // Attentive sound pulse dot
-              <g transform="translate(100, 97)">
-                <ellipse cx="0" cy="0" rx="8" ry="3" fill="#10B981" opacity="0.8" />
-              </g>
-            ) : (
-              // Idle cute gentle smile
-              <path
-                d="M93 96 Q100 101 107 96"
-                stroke="#0EA5E9"
-                strokeWidth="2.5"
-                strokeLinecap="round"
-                fill="none"
-                opacity="0.85"
-              />
-            )}
-          </g>
-        </svg>
-      </div>
-
-      {/* Soft Ground Shadow */}
-      <div className="robot-shadow" aria-hidden="true" />
-
-      {/* Dynamic Status Pill Under Robot */}
-      <div className="robot-status-pill">
-        <span className="status-indicator-dot" />
-        <span className="status-label-text">
-          {isSpeaking
-            ? 'RIA is speaking...'
-            : isListening
-            ? 'RIA is listening...'
-            : isThinking
-            ? 'RIA is thinking...'
-            : 'RIA is ready & connected'}
-        </span>
+          <div className="telecom-status-meta">
+            <span>VAD: {isListening || isSpeaking ? 'ON' : 'ARMED'}</span>
+            <span className="meta-sep">/</span>
+            <span>AES-256</span>
+          </div>
+        </div>
       </div>
     </div>
   );

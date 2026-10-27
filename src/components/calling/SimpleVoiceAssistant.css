@@ -102,11 +102,27 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  outline: none !important;
+}
+
+.audio-visualizer-dock .lk-audio-bar-visualizer {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  outline: none !important;
 }
 
 .audio-visualizer-dock .lk-audio-bar {
   background-color: #6366f1 !important;
   border-radius: 4px;
+}
+
+.audio-visualizer-dock .lk-audio-bar[data-lk-highlighted='true'],
+.audio-visualizer-dock .lk-audio-bar.lk-highlighted {
+  background-color: #4f46e5 !important;
 }
 
 .visualizer-connecting {
@@ -476,10 +492,7 @@
 
 /* Dock Divider */
 .dock-divider {
-  width: 1px;
-  height: 28px;
-  background: #e2e8f0;
-  margin: 0 2px;
+  display: none !important;
 }
 
 /* End Call Button */

@@ -8,7 +8,6 @@ import Footer from '@/components/Footer';
 import DemoFaqSection from '@/components/demo/DemoFaqSection';
 import {
   PhoneCall,
-  Sparkles,
   BookOpen,
   ArrowRight,
   ShieldCheck,

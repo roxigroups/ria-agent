@@ -15,7 +15,15 @@ export const MAX_CALL_SECONDS = 5 * 60;
 export const AGENT_JOIN_TIMEOUT = 20;
 
 // Browser-side mic processing; the agent adds server-side noise cancellation on top
-export const MIC_OPTIONS = { echoCancellation: true, noiseSuppression: true, autoGainControl: true };
+export const MIC_OPTIONS = {
+  echoCancellation: true,
+  noiseSuppression: true,
+  autoGainControl: true,
+  googEchoCancellation: true,
+  googAutoGainControl: true,
+  googNoiseSuppression: true,
+  googHighpassFilter: true,
+};
 
 const USAGE_KEY = 'ria-demo-usage';
 const VISITOR_KEY = 'ria-demo-visitor';

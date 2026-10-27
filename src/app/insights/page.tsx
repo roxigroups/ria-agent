@@ -1552,7 +1552,7 @@ export default function InsightsPage() {
                   <path d="M5 12h14M13 6l6 6-6 6" />
                 </svg>
               </Link>
-              <Link className="btn-action btn-ghost-dark" href="/demo">
+              <Link className="btn-action btn-ghost-dark" href="/contact">
                 <span>Book a Demo</span>
                 <svg
                   viewBox="0 0 24 24"
